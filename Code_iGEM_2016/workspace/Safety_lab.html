@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8"> 
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Bootstrap -->
+    <link href = "css/bootstrap.min.css" rel = "stylesheet">
+    
+    <script src="jquery-3.0.0.min.js" type="text/javascript"></script>
+    
+    <script src="script.js" type="text/javascript"></script>
+    
+    <!--The segment below is necessary for importing html pages. We probably have to do it the dumb wiki way later-->
+    <script type="text/javascript"> 
+      $(function(){
+        $("#header_navbar").load("header_navbar.html"); 
+      });
+    </script>
+    
+   <title>Chalmers Gothenburg iGEM 2016</title>
+  </head>
+
+  <body class="safety">
+    
+    <div id="header_navbar_wrapper">
+      <!--Header navbar import. We might have to use the wiki import later-->
+      <div id="header_navbar"></div>
+    </div>
+    
+    <div class="wrap"> <!--To limit the width of the site-->
+
+           
+        <div class="header">
+    <div class="header-text">SAFETY</div>
+    <div class="header-subtitle">Lab Safety</div>
+    </div>
+     <!--This is the side navigation bar-->
+      <aside id="side-nav">
+        <div id="nav-anchor">
+          <nav>
+            <a href="#lab_safety" class="active">Lab safety</a>
+            <a href="#risk_declaration">Risk declaration</a>
+            <a href="#MSDS">MSDS</a>
+            <a href="#Risk_assessments">Risk assessments</a>
+          </nav>
+        </div>
+      </aside>
+    <!--To limit the width of the site-->
+       <div class="wrap-content">
+            <p class="text">Before starting the wetlab part of the project all team members
+            had to take part in a safety lecture held by the lab manager at the Systems and 
+            synthetic biology department. During this lecture the eam learned how to handle 
+            chemicals and waste in the lab, we also had a lab tour where the safety equipment
+            were introduced. During the lab tour all the responsible research engineers were
+            present and gave us introductions to all of the different lab equipments they are 
+            responsible for.</p>
+            <p class="text">As a safety measurement, each team member had to read the
+            materials safety data sheet for the materials used and the KLARA risk assessments
+            of the machines handled during the summer. Each member then had to sign the risk 
+            declaration to testify that one had taken part of this information and gain access 
+            to the laboratory.</p>
+            <h3 class="sidetitle" id="risk_declaration">Risk declaration</h3>
+            <ul>
+                <li class="list">SOP risk declaration guidelines</li>
+                <li class="list">Risk Declaration 2016</li>
+            </ul>
+            <h3 class="sidetitle" id="MSDS">MSDS - Material Safety Data Sheet</h3>
+            <ul>
+                <li class="list">Chloramphenicol</li>
+                <li class="list">Ampicillin</li>
+                <li class="list">G418 disulfate salt colution</li>
+                <li class="list">GelRed Nucleic acid stain</li>
+                <li class="list">Kanamycin sulfate</li>
+                <li class="list">Spectinomycin hydrochloride</li>
+            </ul>
+            <h3 class="sidetitle" id="Risk_assessments">KLARA Risk assessments</h3>
+            <ul>
+                <li class="list">Dishwasher</li>
+                <li class="list">-80°C freezer</li>
+                <li class="list">Bench-top autoclave</li>
+                <li class="list">Centrifugal vacuum vaporator</li>
+                <li class="list">Centrifuge (Avanti J-20 XP)</li>
+                <li class="list">Centrifuge (Sigma 4K15)</li>
+                <li class="list">Gel electrophoresis with GelRed</li>
+                <li class="list">Gel electrophoresis</li>
+                <li class="list">Heat block</li>
+                <li class="list">Rotary shakers, Incubators</li>
+                <li class="list">Small centrifuges</li>
+                <li class="list">LAF bench</li>
+                <li class="list">Thermal cycler (PCR)</li>
+            </ul>
+        </div>
+   </div> 
+  </body>
+
+</html>
