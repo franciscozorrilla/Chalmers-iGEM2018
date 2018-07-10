@@ -40,3 +40,21 @@
       color: #FFFFFF!important;
       background-color: #37474F!important;
     }
+
+    #accordion {
+      text-align: center;
+    }
+
+    #accordion>div>div>h5>button {
+      color: #37474F!important;
+    }
+
+    .team-pictures {
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+      margin: 5px;
+    }
+
+    .team-pictures>a>h4 {
+      padding: 10px;
+      color: #37474F!important;
+    }
