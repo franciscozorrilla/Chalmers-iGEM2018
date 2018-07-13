@@ -58,3 +58,7 @@
       padding: 10px;
       color: #37474F!important;
     }
+
+    .carousel {
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    }
