@@ -1,14 +1,16 @@
-function KofahlANDKlipp2004Model_AntiCancerYeast
+function [t,alpha_factor_conc] = KofahlANDKlipp2004Model_AntiCancerYeast(reaction_v48_k48,pop_size)
+    % Is it the alpha concentration that we want or what did we measure?
+    % SHOULD INSTEAD RETURN ANTI-CANCER AGENT CONCENTRATION
     % Initial conditions and constants from article 
         
     nr_species = 38;
-    pop_size = 100; % Try different (but we need to have the populatio size 
+    % A: Try different population sizes (but we need to have the populatio size 
     % when we do the measurements or will the alpha system be used in the measurements?7)
     baseline_conc = 100.0; % value from ready-made model, but 1000 nM in article?
-    % Should find our ow value; expression of GFP without alpha pheromone
+    % A: Should find our own value; expression of GFP without alpha pheromone
 
     % Initial conditions vector
-    x0 = zeros(nr_species,1);
+    x0 = zeros(nr_species, 1);
     x0(1) = baseline_conc; % alpha-factor 
     x0(2) = 1666.6666667; % Ste2
     x0(3) = 0.0; % Ste2active
@@ -50,7 +52,7 @@ function KofahlANDKlipp2004Model_AntiCancerYeast
     x0(38) = baseline_conc; % anti-cancer agent
     
 
-    % A: This is never used? What is it?
+    % A: This is never used? What is it? Steady-state concentrations?
     xss = [2.4703e-32
        -2.696e-29
       -1.0794e-30
@@ -91,7 +93,7 @@ function KofahlANDKlipp2004Model_AntiCancerYeast
 
     %Creating linespace
     % t=linspace(0,9000);
-    t = [0 250];
+    tI = [0 250];
     %Solving equations
     %lsode replaced by ODE45
     %ODE45 is equivalent of lsode in matlab
@@ -102,27 +104,23 @@ function KofahlANDKlipp2004Model_AntiCancerYeast
     % the MAPK cascade is not activated if the concentration of alpha
     % pheromone is too low
     if (pop_size * baseline_conc) > alpha_threshold
-        [t,x] = ode23s(@f,t,x0);
+        % Add extra input value
+        disp('Running model')
+        [t,x] = ode23s(@(t, x) f(t, x, reaction_v48_k48, nr_species, pop_size), tI, x0);
     end 
 
-    plot(t,x(:,6)); % Gbc
-
-
-    % %ploting the results
-    % subplot 211
-    % plot(t,x(:,26)); % Ste2a
-    % subplot 212
-    % plot(t,x(:,23)); % Fus3a
+    plot(t,x(:,1)); % Alpha pheromone
+    
 
     % plot(t,x(:,26));
     % title('Analysis of the cell cycle arrest knockout on the transcription factor Ste12');
     % ylabel('[nM]');xlabel('Time(min)');
     % legend('Ste12active concentration with knockout')
-    % DID THEY REMOVE SOMETHING???? SHOULD REALLY COMPARE THE MODEL WITH
+    % A: DID THEY REMOVE SOMETHING???? SHOULD REALLY COMPARE THE MODEL WITH
     % THE ARTICLE
     
-    % Multiply the alpha pheromone concentration with pop_size and try
-    % different population sizes
+
+    alpha_factor_conc = x(:,1); 
 end
 
 
