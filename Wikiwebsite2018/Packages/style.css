@@ -29,7 +29,12 @@ body {
   background-size: cover;
 }
 
-/*----------------------The navbar---------------------------*/
+/*----------------------The navbar----------------------------*/
+#navbar {
+  box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+/*----------------------The sidebar---------------------------*/
 .nav-pills>li>a {
   /* Changing the color of the pills in the navbar from the boostrap default of blue,*/
   color: #37474F!important;
@@ -67,7 +72,7 @@ footer {
 }
 .footerimg {
   max-height: 100px;
-  max-width: 250px;
+  max-width: 200px;
 }
 .footerlogo {
   display: inline-block;
@@ -83,4 +88,11 @@ footer {
 }
 .footerlogo:hover .off {
   display: block;
+}
+footer>div>p>span>a {
+  font-size:large;
+  color: #37474F!important;
+}
+footer>div>p>span>a.active {
+  color: #37474F!important;
 }
