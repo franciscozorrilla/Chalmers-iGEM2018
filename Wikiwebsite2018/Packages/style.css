@@ -79,15 +79,13 @@ footer {
   vertical-align: bottom;
   padding: 1.5em;
 }
-.footerlogo .on {
+.footerlogo .on,
+.footerlogo:hover .off {
   display: block;
 }
 .footerlogo:hover .on,
 .footerlogo .off {
   display: none;
-}
-.footerlogo:hover .off {
-  display: block;
 }
 footer>div>p>span>a {
   font-size:large;
