@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8"> 
+
+      <!-- Bootstrap -->
+    <link href = "bootstrap/css/bootstrap.min.css" rel = "stylesheet">
+    
+    <link rel="stylesheet" href="style.css">    
+  
+    
+    <script src="jquery-3.0.0.min.js" type="text/javascript"></script>
+    
+    <script src="script.js" type="text/javascript"></script>
+    
+    <!--The segment below is necessary for importing html pages. We probably have to do it the dumb wiki way later-->
+    <script type="text/javascript"> 
+      $(function(){
+        $("#header_navbar").load("header_navbar.html");
+        $("#footer").load("footer.html");
+      });
+    </script>
+    
+    <!--This script is used to change slides automatically. Needs the correct number of slides!-->
+    <script type="text/javascript">
+      var sliderTimer=setTimeout(autoChangeSlide,10000);
+    
+      function autoChangeSlide() {	
+	      if (document.getElementById('slide1').checked) {
+	        document.getElementById("slide2").checked = true;
+	      } else if (document.getElementById('slide2').checked) {
+		      document.getElementById("slide3").checked = true;
+	      } else if (document.getElementById('slide3').checked) {
+		      document.getElementById("slide4").checked = true;
+	      } else if (document.getElementById('slide4').checked) {
+		      document.getElementById("slide5").checked = true;
+	      } else if (document.getElementById('slide5').checked) {
+		      document.getElementById("slide1").checked = true;
+	      }
+	      sliderTimer=setTimeout(autoChangeSlide,10000);
+      }
+      
+      function resetSliderTimer() {
+        clearTimeout(sliderTimer);
+        sliderTimer=setTimeout(autoChangeSlide,15000);
+      }
+    </script>
+    
+   <title>Chalmers Gothenburg iGEM 2016</title>
+  </head>
+
+  <body class="home">
+    
+    <div id="header_navbar_top">
+      <div id="header_navbar_top_title">Turning Pollution into a Solution</div>
+      <div id="header_navbar_top_logo"><img src="media/igem_2016_logo/iGEM_2016_logo_transparent_sunnier.png" alt="logo" style="height:170px;"></div>
+    </div>
+    
+    <div id="header_navbar_wrapper">
+      <!--Header navbar import. We might have to use the wiki import later-->
+      <div id="header_navbar"></div>
+    </div>    
+    
+    <div class="wrap"> <!--To limit the width of the site-->
+
+      <div class="wrap-content-no-side-nav">
+	
+      
+      <!-- Slider Setup -->
+<div class="bigslider">	
+
+		<input checked type=radio name=slider id=slide1 onchange="resetSliderTimer()" />
+		<input type=radio name=slider id=slide2 onchange="resetSliderTimer()" />
+		<input type=radio name=slider id=slide3 onchange="resetSliderTimer()" />
+		<input type=radio name=slider id=slide4 onchange="resetSliderTimer()" />
+		<input type=radio name=slider id=slide5 onchange="resetSliderTimer()" />
+		<!-- The Slider -->
+		
+		<div id=slides>
+		
+			<div id=overflow>
+			
+				<div class=inner>
+				
+					<article>
+						<div class="info-container"><div class=info><h3>Turning pollution into a solution</h3><a href="Project_intro.html">Learn more about our project idea</a></div></div>
+						<a href="Project_intro.html"><img src="media/index_slideshow/project_slideshow.png" /></a>
+					</article>
+					
+					
+					<article>
+						<div class="info-container"><div class=info><h3>The Team</h3><a href="Team_students.html">Meet the students</a></div></div>
+						<a href="Team_students.html"><img src=media/index_slideshow/team_photo_lappstiftet.png /></a>
+					</article>
+					
+					
+					<article>
+						<div class="info-container"><div class=info><h3>Achievements</h3><a href="Achievements_results.html">Learn more about our results</a></div></div>
+						<a href="Achievements_results.html"><img src=media/index_slideshow/achievements.png /></a>
+					</article>
+					
+					<article>
+						<div class="info-container"><div class=info><h3>Human Practices</h3><a href="HP_intro.html">Learn more about our public outreach</a></div></div>
+						<a href="HP_intro.html"><img src=media/index_slideshow/human_practices_presentation.png /></a>
+					</article>
+					
+					<article>
+						<div class="info-container"><div class=info><h3>Modeling</h3><a href="Model_intro.html">Look at our fancy simulations</a></div></div>
+						<a href="Model_intro.html"><img src=media/index_slideshow/fancy_equations.png /></a>
+					</article>
+					
+				</div> <!-- .inner -->
+				
+			</div> <!-- #overflow -->
+		
+		</div> <!-- #slides -->
+	
+	
+		<!-- Controls and Active Slide Display -->
+	
+		<div id=controls>
+
+			<label for=slide1></label>
+			<label for=slide2></label>
+			<label for=slide3></label>
+			<label for=slide4></label>
+			<label for=slide5></label>
+		
+		</div> <!-- #controls -->
+		
+		<div id=active>
+
+			<label for=slide1></label>
+			<label for=slide2></label>
+			<label for=slide3></label>
+			<label for=slide4></label>
+			<label for=slide5></label>
+			
+		</div>
+		
+	</div>
+      
+      
+      
+      
+        <!--Description-->
+        
+      <div class="target" id="project_description">
+          
+          <h1 class="subtitle">The project</h1>
+         
+
+          <p class="text">
+            Current methods of chemical synthesis from petroleum have led to great environmental 
+            disruption and continue to be a strong contributor to the emission of greenhouse gases.
+            Biosynthesis is known to be the most viable alternative to the aforementioned methods. 
+            However, biosynthesis of certain products has a high cost-to-benefit ratio, with substrate 
+            comprising over 60% of the total costs for industrial fermentation in most cases. With this
+            in mind, our solution is to create a self-sustaining microbial production platform that produces
+            its own substrate using photosynthesis. Our project revolves around creating a co-culture where
+            a cyanobacterium provides the heterotrophic production organisms with the carbon source. In 
+            return, the production organism provides an amino acid the auxotrophic cyanobacterium needs. By 
+            making several different species compatible with the synthetic symbiosis, our platform will allow 
+            for efficient conversion of atmospheric carbon dioxide into desired products in an environmentally 
+            friendly and sustainable way.
+          </p>
+
+
+
+          
+          
+    
+        </div>
+        
+        
+      <div id="footer"></div>
+      
+      
+    </div>
+    
+  
+  </body>
+
+</html>

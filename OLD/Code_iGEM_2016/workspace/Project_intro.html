@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8"> 
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Bootstrap -->
+    <link href = "css/bootstrap.min.css" rel = "stylesheet">
+    
+    <script src="jquery-3.0.0.min.js" type="text/javascript"></script>
+    
+    <script src="script.js" type="text/javascript"></script>
+    
+    <!--The segment below is necessary for importing html pages. We probably have to do it the dumb wiki way later-->
+    <script type="text/javascript"> 
+      $(function(){
+        $("#header_navbar").load("header_navbar.html");
+        $("#footer").load("footer.html");
+      });
+    </script>
+    
+   <title>Chalmers Gothenburg iGEM 2016</title>
+  </head>
+
+  <body class="project">
+    
+    <div id="header_navbar_wrapper">
+      <!--Header navbar import. We might have to use the wiki import later-->
+      <div id="header_navbar"></div>
+    </div>
+    
+    <div class="wrap"> <!--To limit the width of the site-->
+
+           
+        <div class="header">
+    PROJECT
+    </div>
+     
+      <!--This is the side navigation bar-->
+      <!--<aside id="side-nav">
+        <div id="nav-anchor">
+          <nav>
+            <a href="#description" class="active">The project</a>
+            <a href="#problem">The problem</a>
+            <a href="#purification">Less steps</a>
+            <a href="#directly">Why not directly?</a>
+            <a href="#organisms">Which organisms?</a>
+          </nav>
+        </div>
+      </aside>-->
+      
+      <div class="wrap-content-no-side-nav">
+        <div class="target" id="description">
+          <h2 class="subtitle">Project introduction</h2>
+          <p class="text">Current commercial production of many chemicals is based on 
+          fossil sources of carbon. This inevitably results in staggering amounts of carbon
+          dioxide being released into the atmosphere of the Earth (in excess of 35 billion
+          tonnes annually1). Though carbon dioxide itself is not very toxic, the current
+          increasing atmospheric concentrations of this greenhouse gas has a massive effect
+          on the ecosystems of the planet as well as human quality of life. Examples of this
+          is the acidification of oceans and an increasing mean temperature of the earth.
+          These problems can be mediated by replacing petrochemical-based production with a sustainable
+          production method based on biosynthesis in microorganisms. This is currently applied
+          in the production of bioethanol, which uses a process very similar to fermenting
+          alcoholic beverages. However, this requires large amounts of sugars used as the 
+          carbon source, which is currently taken from plant-based materials such as corn 
+          and sugarcane2. This has a significant impact on the quality of life in developing
+          parts of the world, where crops are grown and sold for fuel production instead of
+          feeding the local population, leading to a substantial increase in food prices3,4.</p>
+        </div>
+        
+        <div class="target" id="problem">
+          <h4 class="sidetitle">How can we solve the problem of increasing levels of carbon
+          dioxide and the social issues caused by current substrate production?</h4>
+          <p class="text">Our solution to this problem is to use photosynthetic bacteria 
+          to produce the carbon substrate needed for industrial fermentation. The carbon 
+          fixation ability of cyanobacteria allows for the direct conversion of carbon 
+          dioxide into a usable carbon source that the cyanobacterium then secretes. The
+          secreted carbon source can be converted into a useful product using biosynthesis.
+          Biosynthesis refers to the production of complex molecules within living organisms
+          or cells. A variety of microorganisms, such as <i>Saccharomyces cerevisiae</i>,
+          <i>Bacillus subtilis</i> and many more, are already used in the industry today for this purpose.</p>
+          <p class="text">There are several approaches that can be used for this kind of 
+          system. The cyanobacterium could be grown separately and its supernatant could
+          be used as medium for the separate fermentation for the production organism. 
+          This would mean that the fermentations would still be done in separate batches,
+          similarly to how industrial fermentation is performed today. However, this method
+          requires several purification steps: the cyanobacteria medium has to be separated 
+          from the bacteria, and the product of interest has to be separated from the production batch.</p>
+        </div>
+        
+        <div class="target" id="purification">
+          <h4 class="sidetitle">How can we decrease the number of purification steps?</h4>
+          <p class="text">To solve this issue, we will establish a continuous production system. 
+          The proposed system is a co-culture where both organisms are kept in the same container.
+          To prevent one organism from outcompeting the other in the system, the organisms are
+          modified to be metabolically dependent on each other, resulting in a symbiotic system. 
+          The modified cyanobacterium (<i>Synechocystis</i>) produces the carbon source that the production
+          organism requires. In return, the production organism produces a specific amino acid that
+          the auxotrophic cyanobacterium requires for survival. In this way we hope to create a 
+          self-regulated system that will maintain equilibrium between the two organisms. Furthermore,
+          the auxotrophy of the cyanobacterium makes it non-viable outside the lab environment, 
+          preventing unwanted spread of the bacteria.</p>
+        </div>
+        
+        <div class="target" id="directly">
+          <h4 class="sidetitle">Why not produce chemicals directly from <i>Synechocystis</i>?</h4>
+          <p class="text">Converting carbon dioxide into useful molecules is an ability 
+          that makes cyanobacteria interesting as a production system for the biotech industry.
+          However, with this ability a few disadvantages arise. One of them is a slower growth 
+          rate, and therefore a longer recovery time, after performing genetic modifications. 
+          Furthermore, the genetic tools needed for genetic modification are not as developed 
+          as for industrially used organisms like <i>E. coli</i> and <i>S. cerevisiae</i>. This makes introduction 
+          of new synthesis pathways slower in cyanobacteria than it is in other well-studied species.
+          Therefore, we leave the production of chemicals to the organisms that have already 
+          proven themselves well suited for this task.</p>
+          <p class="text">The carbon source that the cyanobacterium is modified to overproduce is 
+          acetate. It was chosen since it is naturally present in the metabolism of cyanobacteria. 
+          Furthermore, acetate production by <i>Synechocystis</i> has been shown to be possible both in
+          previous publications5 and iGEM projects6. Overproduction of acetate in <i>Synechocystis</i> 
+          is achieved by knock-outs and knock-ins of genes involved in acetate metabolism. The 
+          cyanobacterium is also made auxotrophic for arginine or glutamine to make it reliant 
+          on the production organism and prevent it from surviving outside the lab. In this case, 
+          the arginine auxotrophic bacteria will be co-cultured with prokaryotic production 
+          organisms and the glutamine auxotrophs with eukaryotic organisms.</p>
+        </div>
+        
+        <div class="target" id="organisms">
+          <h4 class="sidetitle">What production organisms will we use in this project?</h4>
+          <p class="text">Four different industrially relevant organisms are modified to be 
+          compatible with the symbiotic production system. These are <i>Saccharomyces cerevisiae, 
+          Escherichia coli, Yarrowia lipolytica</i> and <i>Bacillus subtilis</i>. As described earlier,
+          all production organisms will have to produce an amino acid that the cyanobacterium 
+          requires. Due to the difference in metabolism and regulation of amino acid synthesis, 
+          it proved difficult to make all organisms secrete the same amino acid. Therefore the 
+          eukaryotes (<i>S. cerevisiae</i> and <i>Y. lipolytica</i>) are modified to secrete glutamine and 
+          the prokaryotes (<i>E. coli</i> and <i>B. subtilis</i>) are engineered to secrete arginine.</p>
+          <p class="text">All of the production organisms except for <i>Bacillus subtilis</i> 
+          are capable of growing on acetate in their wild type state. An operon from its 
+          cousin <i>Bacillus licheniformis</i> is therefore incorporated into the <i>Bacillus subtilis</i> 
+          strain. We have chosen to work with <i>B. subtilis</i> over <i>B. licheniformis</i> due to the
+          expertise available at our lab and the biobrick library available for this organism</p>
+          <p class="text">With the four production organisms we will create a library of organisms
+          compatible with the symbiotic production system. Our solution will provide a platform for
+          a versatile system that converts carbon dioxide into everyday products in an environmentally 
+          friendly and sustainable way.</p>
+        </div>
+        
+        
+      <div id="footer"></div>
+      
+      
+    </div>
+    
+  
+  </body>
+
+</html>

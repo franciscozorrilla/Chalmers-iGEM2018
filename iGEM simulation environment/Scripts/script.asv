@@ -1,0 +1,45 @@
+%% Simulation environment for iGEM Chalmers 2018
+%  Author: Francisco Zorrilla
+%  2018-08-05
+%
+%  Community model of Human Gut + Colorectal Cancer + Engineering
+%  S.boulardii.
+
+cd('C:\Users\zorrilla\Desktop\iGEM simulation environment')
+%% 1. Load Models
+
+% Saccharomyces boulardii derived from homology using 
+load('modelSbo.mat'); 
+
+% Colon tissue GEM derived from HMR2.0
+modelColon =importModel('colon.xml');% Colon specific GEM obtained from http://www.metabolicatlas.org/downloads/tissue
+exportToExcelFormat(modelColon,'modelColon.xlsx');% Export to excel for inspection, no biomass function present! Obtain from HMR2 model
+
+load('HMRdatabase2_00.mat');% HMR2.0
+
+for q=1:length(ihuman.subSystems)
+    ihuman.subSystems{q,1}={ihuman.subSystems{q,1}}; %Need to do this for exportToExcel() to work
+end
+
+exportToExcelFormat(ihuman,'ihuman.xlsx')%Try adding all 'artificial reactions' from HMR2.0 to colon
+
+%super sketchy move
+modelColon.genes = ihuman.genes
+
+noGeneIdx=find(cellfun(@isempty,ihuman.grRules)); % Find rxns with no genes
+rxns=ihuman.rxns(noGeneIdx); % Obtain reaction IDs
+modelColon=addRxnsGenesMets(modelColon,ihuman,rxns,true,...
+    'Modeling reaction required for growth, gene unknown',1); % Add reactions and metabolites to model
+
+%undo super sketchy move
+%modelColon = rmfield(modelColon,'genes')
+
+%delete subSystems for exportToExcel() to work
+modelColon = rmfield(modelColon,'subSystems')
+exportToExcelFormat(modelColon,'modelColon.xlsx');
+
+modelColon=setParam(modelColon,'obj','biomass_components',1);
+sol=solveLP(modelColon,1);
+printFluxes(modelColon,sol.x); % no growth, check bounds of exchange rxns
+
+modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9456'},1); %still no growth

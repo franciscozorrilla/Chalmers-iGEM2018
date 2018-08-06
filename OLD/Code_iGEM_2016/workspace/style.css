@@ -1,0 +1,947 @@
+@import url(https://fonts.googleapis.com/css?family=Rubik|Lato);
+
+* {
+  margin:0;
+  padding:0;
+}
+
+body { 
+    background-color: #FAFAFA;
+    font-family:'Lato', sans-serif;
+}
+
+
+
+/*---------------Index page header (above header nav bar)------------------------------*/
+
+/*This is for the part above the header navbar with the title and logo*/
+#header_navbar_top {
+  /*background-color: #016243;*/
+  /*background: linear-gradient(#1f7d01, #016243);*/
+  /*background-image: url("media/header-bg-test1.jpeg");*/
+  background-image: url("media/fabric-of-squares.png"), linear-gradient(to bottom, #7bac78, #016243);
+  background-repeat: repeat;
+  height: 210px;/*220px*/
+  min-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  /*padding: 20px;/*Find another way to move the logo down a bit?*/
+  border-bottom: 1px solid transparent;
+  -moz-border-image: -moz-linear-gradient(left, #016243 0%, #b5deca, #016243 100%);
+  -webkit-border-image: -webkit-linear-gradient(left, #016243 0%, #b5deca, #016243 100%);
+  border-image: linear-gradient(to right, #016243 0%, #b5deca, #016243 100%);
+  border-image-slice: 1;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/*This is the title of the project*/
+#header_navbar_top_title {
+  display:inline-block;
+  /*padding-bottom:160px;*/
+  padding-right:100px;
+  font-size: 55px;
+  line-height: 210px;
+  vertical-align: middle;
+  color: white;
+  font-family:'Lato', sans-serif;
+}
+
+#header_navbar_top_logo {
+  display:inline-block;
+}
+
+
+/*--------------------Header navbar--------------------------------------------*/
+
+
+/*body { 
+    font-family: helvetica;
+	margin:0;
+}*/
+
+/*The wrapper and the nav bar have to be the same height, or the page will jump when the nav bar sticks.*/
+#header_navbar_wrapper, .header_navbar_ul {
+    height: 70px;
+}
+
+.header_navbar_ul {
+  list-style-type: none; /*No bullet points*/
+  margin: 0;
+  padding: 0;
+  background-image: url("media/fabric-of-squares.png");
+  background-repeat: repeat;
+  background-color: #016243;
+  top: 0;
+  width: 100%;
+  min-width: 1440px;
+  z-index:9999;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*Having the header navbar stick to the top of the screen after it reaches that position*/
+.header-nav_stick {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 9999;
+}
+
+/*Current page header highlight*/
+.home #home_link,
+.team #team_link,
+.achievements #achievements_link,
+.HP #HP_link,
+.modelling #modelling_link,
+.notebook #notebook_link,
+.parts #parts_link,
+.project #project_link,
+.safety #safety_link
+{
+    color: white;
+}
+
+
+.dropbtn {
+    background-color: transparent;
+    color: white;
+    padding: 8px;
+    /*font-size: 16px;*/
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown,
+#header_navbar_home {
+    position: relative;
+    display: inline-block;
+    z-index:9999;
+    font-family:'Lato', sans-serif;
+}
+
+.dropdown a,
+#header_navbar_home a {
+  display: block; /*Displaying the links as block elements makes the whole link 
+  area clickable (not just the text), and it allows us to specify padding (and 
+  height, width, margins, etc. if you want)*/
+  color: #b5deca;
+  text-align: left;
+  text-decoration: none;
+  padding: 8px; /*Since block elements take up the full width available, they 
+  cannot float next to each other. Therefore, specify some padding to make them look good*/
+  font-size: 14pt;
+  font-weight:bold;
+  line-height: 54px;
+}
+
+/*Size settings for the dropdown menu content*/
+.dropdown-content a {
+    line-height: 30px;
+    font-size: 12pt;
+}
+
+/* Change the link color on hover over either dropdown button, or the dropdown menu items. Also, rounded top borders */
+.header_navbar_ul li:hover > a {
+    background-color: #7bac78;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+/*No rounded borders for home, which doesn't have a dropdown*/
+#header_navbar_home a:hover {
+    color: white;
+    border-radius: 0 0 0 0;
+}
+
+
+/*Top right rounded highlight for first list element in dropdown menu*/
+.dropdown-content a:first-child:hover {
+    border-radius: 0 10px 0 0;
+}
+
+/*bottom rounded highlights for last list element in dropdown menu*/
+.dropdown-content a:last-child:hover {
+    border-radius: 0 0 10px 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #7bac78;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    width: auto !important; /*to avoid line breaks*/
+    white-space: nowrap; /*to avoid line breaks*/
+    min-width: 200px;
+    border-radius: 0 10px 10px 10px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #016243;
+    /*border-radius: 10px 10px 10px 10px; /*Temprorary solution. I'd prefer to only round the corners that touch the corners of the menu*/
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/*Styling for <hr> between menu itmes in the dropdown menus*/
+.header_navbar_ul hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right,  rgba(0, 0, 0, 0), #ccc,  rgba(0, 0, 0, 0));
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/*I don't think this one does anything. Probably because of "".dropdown-content a:hover" covering it.*/
+.dropdown:hover .dropbtn {
+    background-color: #111;
+}
+
+
+
+
+/*---------------------------Footer with sponsor logos----------------------------*/
+
+footer hr  {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    width: 80%;
+    text-align: center;
+    margin-left: 10%;
+    margin-top: 50px;
+}
+
+#footer-contact-row {
+  padding-bottom: 50px;
+}
+
+#footer-contact-row a {
+  color: #cdcdcd;
+  text-decoration: none;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#footer-contact-row a:hover {
+  color: #278c60;
+}
+
+#footer-contact-row hr  {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    width: 30%;
+    text-align: center;
+    margin-left: 35%;
+    padding-bottom: 10px;
+}
+
+#logorow {
+  padding: 2em;
+}
+
+.footerimg {
+  max-height: 100px;
+  max-width: 250px;
+}
+
+.footerlogo {
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 1.5em;
+}
+
+.footerlogo .on {
+  display: block;
+}
+
+.footerlogo:hover .on, .footerlogo .off {
+  display:none;
+}
+
+.footerlogo:hover .off {
+  display:block;
+}
+
+/* should we use this?
+.img-responsive {
+  display: inline;
+}
+*/
+
+/*---------------------------Center page styling---------------------------------*/
+
+/*The wrap class is used for <div> in order to define a space where the
+side navigation bar and the page content (text, images etc) is kept*/
+.wrap {
+  width: 1200px;
+  text-align: center;
+  margin: auto;
+  margin-top: 40px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 10px 0 #888;
+}
+
+/*This is the content of the page, i.e. text images etc. Fits inside <div> with the wrap class*/
+.wrap-content {
+  padding-right: 100px;
+  padding-left: 250px;
+}
+
+/*Like .wrap-content, except with even margins, for pages where a side navigation bar is superfluous*/
+.wrap-content-no-side-nav {
+  padding-right: 75px;/*50px*/
+  padding-left: 75px;
+}
+
+.wrap-content, .wrap-content-no-side-nav {
+  padding-top: 25px;
+}
+
+
+
+
+/*----------------------------Side navigation bar-------------------------------*/
+
+
+#side-nav {
+    width: 25%;
+}
+
+#side-nav nav {
+    width: 200px;
+    padding-left: 25px;
+    padding-top:50px;
+    float: left;
+}
+
+#side-nav a {
+    color: #333;
+    display: block;
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+}
+
+#side-nav a.active {
+    background: #fff7b5;
+    color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #b07a12;
+}
+
+#side-nav a:hover {
+  background: #dcdbdb;
+  color: black;
+}
+
+
+.side-nav_stick {
+    position: fixed;
+    top: 0;
+    z-index: 9990;
+    margin-top:62px;
+}
+
+.hidden-sidenav {
+  opacity: 0;
+}
+
+#side-nav nav {
+	-webkit-transition: opacity 200ms ease-in-out;
+    -moz-transition: opacity 200ms ease-in-out;
+    -ms-transition: opacity 200ms ease-in-out;
+    -o-transition: opacity 200ms ease-in-out;
+}
+
+
+/*---------------------------Profile card styling-------------------------------------*/
+.profile-table {
+  margin: 0 auto 0 auto;
+  border-spacing: 30px;
+}
+
+.profile-main {
+  height: 350px;
+  width: 300px;
+  position: relative;
+  margin: 10px;
+}
+
+.profile-container {
+  height: 350px;
+  width: 300px;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: 1px 1px 4px #666;
+	padding: 1%;
+	background: #fffef9;
+	background: rgb(252,255,244); /* Old browsers */
+	background: -moz-linear-gradient(top,  #fffffb 0%, #fffef9 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(100%,rgba(219,218,201,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fffffb 0%,#fffef9 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fffffb 0%,#fffef9 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fffffb 0%,#fffef9 100%); /* IE10+ */
+	background: linear-gradient(top,  #fffffb 0%,#fffef9 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#dbdac9',GradientType=0 ); /* IE6-9 */
+}
+
+.profile-image {
+  margin: 15px auto 0 auto;
+  height: 250px;
+  width: 250px;
+  position:relative;
+}
+
+.profile-content {
+  display: none;
+  width: 300px;
+  margin: 70px auto 0 auto;
+  text-align: justify;
+}
+
+.profile-container:hover .profile-content {
+  display: block;
+}
+
+.profile-container:hover .profile-image {
+  position: relative;
+}
+
+.profile-name {
+  padding-top: 15px;
+  color: #278C60;
+  font-weight: bold;
+  font-size: 15pt;
+}
+
+.profiletext {
+  font-size: 12pt;
+  margin-top: 10px;
+  line-height: 150%;
+  text-align: justify;
+}
+/*-------------------------------GENERAL STUFF-------------------------------------*/
+
+div {
+  text-align: center;
+}
+
+/*.header is the class used in the header image at the top of pages*/
+.header {
+  font-size: 45pt;
+  color: white;
+  text-align: center;
+  /*background-image: url("media/test4.png");*/
+    background-image: url("media/fabric-of-squares.png"), linear-gradient(to bottom, #0c749c, #145071);
+  background-repeat: repeat;
+  height: auto;
+  line-height: 130px;
+  }
+
+/* This method of getting an inset shadow for text does not work in IE */
+/*.header-text {
+  background-color: black;
+  color: transparent;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px white;
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}*/
+
+.header-text {
+  /*color: white;
+  font-size: 45pt;*/
+  font-size: 40pt;
+  line-height: 45pt;
+  padding-top: 35px;
+}
+
+.header-subtitle {
+  /*color: white;*/
+  font-size: 20pt;
+  line-height: 20pt;
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+
+/*--------------Basic text and content styling---------------------------------*/
+p {
+  font-size: 12pt;
+  text-align: justify;
+  text-justify: inter-word;
+  /*text-indent: 20px;*/
+  line-height: 150%;
+  margin-bottom: 10px;
+}
+
+
+h2 {
+  color: #278C60;
+}
+
+h3 {
+  text-align: left;
+  /*margin-top: 10px;*/
+}
+
+figcaption {
+  color: black;
+  font-size: 11pt;
+  text-align: justify;
+  padding: 5px;
+  /*background-color: #eff5ef;*/
+}
+
+figcaption b {
+  color: #278C60;
+}
+
+.subtitle {
+  text-align:left;
+  padding: 5px;
+  font-size: 20pt !important;
+  background-color: #278C60;
+  color: white !important;
+  line-height: 150% !important;
+  font-weight:600 !important;
+}
+
+.list {
+  margin-left:50px;
+  list-style-position: outside;
+  text-align: justify;
+  text-justify: inter-word;
+  margin-top: 10px;
+  font-size: 12pt;
+  line-height: 125%;
+}
+
+.sponsor-picture {
+  border: 1px solid black;
+  width: 170px;
+  height:170px;
+  display: inline-block;
+}
+.sidetitle {
+  text-align:left;
+  padding: 5px;
+  font-size: 15pt;
+  background-color: #5B9E00;
+  margin-top: 10px;
+  line-height: 150%;
+  color:black;
+  text-decoration:none;
+  font-weight:600;
+}
+
+
+/*--------------Links in text and lists are green when hovered------------------*/
+
+
+
+p a:link {
+  text-decoration: none;
+  color: #278C60;
+  font-weight: bold;
+}
+
+p a:link:hover {
+  color: #6CBC9A;
+}
+
+/*.list a:link, a:visited {
+  text-decoration: none;
+  color: #7bac78;
+}
+
+.list a:hover {
+  text-decoration: none;
+  color: #5B9E00;
+}
+
+.text a:link, a:visited {
+  text-decoration: none;
+  color: #278C60;
+}
+
+.text a:hover {
+  text-decoration: none;
+  color: #5B9E00;
+}
+
+.profiletext a:link, a:visited {
+  text-decoration: none;
+  color: #278C60;
+  font-weight: bold;
+}
+
+.profiletext a:hover {
+  text-decoration: none;
+  color: #7bac78;
+}*/
+
+/*superscript and subscript modification so it doesn't fuck up line-height in multiple lined text*/
+sub, sup { 
+	font-size: 75%;
+	line-height: 0; 
+	position: relative; 
+	vertical-align: baseline; 
+}
+sup { 
+	top: -0.5em; 
+}
+sub { 
+	bottom: -0.25em; 
+}
+
+.thankyoutext {
+  font-size: 16pt;
+  text-align: justify;
+  text-justify: inter-word;
+  margin-top: 10px;
+  text-indent: 20px;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+/*---------------------------BUTTON---------------------------------*/
+.button {
+  display: inline-block;
+  border-radius: 10px;
+  background-color: #5B9E00;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 250px;
+  transition: all 0.6s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/*-----------------------long button----------------------------------------*/
+.button_long {
+  display: inline-block;
+  border-radius: 10px;
+  background-color: #5B9E00;
+  border: none;
+  color: black;
+  text-align: left;
+  font-weight:600;
+  font-size: 15pt;
+  padding: 10px;
+  width: 100%;
+  transition: all 0.6s;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button_long span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button_long span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button_long:hover span {
+  padding-right: 25px;
+}
+
+.button_long:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
+/*-----------------------------------SLIDER------------------------------------*/
+.bigslider{
+  width: 1000px;
+  margin: auto;
+}
+/* Slider Setup */
+
+input {
+	display: none;
+}
+
+#slide1:checked ~ #slides .inner { margin-left:0; }
+#slide2:checked ~ #slides .inner { margin-left:-100%; }
+#slide3:checked ~ #slides .inner { margin-left:-200%; }
+#slide4:checked ~ #slides .inner { margin-left:-300%; }
+#slide5:checked ~ #slides .inner { margin-left:-400%; }
+
+
+#overflow {
+	width: 100%;
+	overflow: hidden;
+}
+
+article img {
+	width: 100%;
+}
+
+#slides .inner {
+	width: 500%;
+	line-height: 0;
+}
+
+#slides article {
+	width: 20%;
+	float: left;
+}
+
+/* Slider Styling */
+
+/* Control Setup */
+
+#controls {
+	margin-top: -30%;
+	width: 100%;
+	height: 0; /*If more than zero, not possible to click image.*/
+}
+
+#controls label { 
+	display: none;
+	width: 50px;
+	height: 50px;
+	opacity: 0.3;
+}
+
+#active {
+	margin-top: 31%; /*Had to change this after I reduced height to 0 in #controls*/
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+#active label {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	background: #bbb;
+}
+
+#active label:hover {
+	background: #ccc;
+	border-color: #777 !important;
+}
+
+#controls label:hover {
+	opacity: 0.8;
+}
+
+#slide1:checked ~ #controls label:nth-child(2), 
+#slide2:checked ~ #controls label:nth-child(3), 
+#slide3:checked ~ #controls label:nth-child(4), 
+#slide4:checked ~ #controls label:nth-child(5), 
+#slide5:checked ~ #controls label:nth-child(1) {
+	background: url('http://csscience.com/responsiveslidercss3/next.png') no-repeat;
+	float: right;
+	margin: 0 -50px 0 0;
+	display: block;
+}
+
+
+#slide1:checked ~ #controls label:nth-child(5),
+#slide2:checked ~ #controls label:nth-child(1),
+#slide3:checked ~ #controls label:nth-child(2),
+#slide4:checked ~ #controls label:nth-child(3),
+#slide5:checked ~ #controls label:nth-child(4) {
+	background: url('http://csscience.com/responsiveslidercss3/prev.png') no-repeat;
+	float: left;
+	margin: 0 0 0 -50px;
+	display: block;
+}
+
+#slide1:checked ~ #active label:nth-child(1),
+#slide2:checked ~ #active label:nth-child(2),
+#slide3:checked ~ #active label:nth-child(3),
+#slide4:checked ~ #active label:nth-child(4),
+#slide5:checked ~ #active label:nth-child(5) {
+	background: #333;
+	border-color: #333 !important;
+}
+
+/* Info Box */
+
+/*This fixes the transition problems for IE*/
+.info-container {
+  position:relative;
+}
+
+.info {
+	margin: 0 0 -150%;
+	position: absolute;
+	padding: 20px 20px;
+	opacity: 0;
+	color: white;
+	background-color: rgba(12, 116, 156, 0.8);
+	text-align: left;
+	border-radius: 15px;
+	line-height: 150%;
+	font-size: 15pt;
+}
+
+.info a {
+  	text-decoration: none;
+  	color: #A5D3E4;
+}
+
+.info a:hover {
+  text-decoration: underline;
+}
+
+.info h3 {
+	color: white;
+	margin: 0 0 5px;
+	font-weight: normal;
+	font-size: 25px;
+	font-style: normal;
+}
+
+/* Slider Styling */
+
+#slides {
+	margin: 20px 20px 20px 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: 1px 1px 4px #666;
+	padding: 1%;
+	background: #fff;
+	background: rgb(252,255,244); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(252,255,244,1) 0%, rgba(219,218,201,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(100%,rgba(219,218,201,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(219,218,201,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(219,218,201,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(219,218,201,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(252,255,244,1) 0%,rgba(219,218,201,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#dbdac9',GradientType=0 ); /* IE6-9 */
+}
+
+
+/* Animation */
+
+#slides .inner {
+	-webkit-transform: translateZ(0);
+	-webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+	-moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+	-webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+	-moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+
+#slider {
+	-webkit-transform: translateZ(0);
+	-webkit-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+}
+
+#controls label{
+	-webkit-transform: translateZ(0);
+	-webkit-transition: opacity 0.2s ease-out;
+	-moz-transition: opacity 0.2s ease-out;
+	-o-transition: opacity 0.2s ease-out;
+	transition: opacity 0.2s ease-out;
+}
+
+#slide1:checked ~ #slides article:nth-child(1) .info,
+#slide2:checked ~ #slides article:nth-child(2) .info,
+#slide3:checked ~ #slides article:nth-child(3) .info,
+#slide4:checked ~ #slides article:nth-child(4) .info,
+#slide5:checked ~ #slides article:nth-child(5) .info {
+	opacity: 1;
+	-webkit-transition: all 1s ease-out 0.6s;
+	-moz-transition: all 1s ease-out 0.6s;
+	-o-transition: all 1s ease-out 0.6s;
+	transition: all 1s ease-out 0.6s;
+}
+
+.info, #controls, #slides, #active, #active label, .info h3, .desktop, .tablet, .mobile {
+	-webkit-transform: translateZ(0);
+	-webkit-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+}
+
+
+
