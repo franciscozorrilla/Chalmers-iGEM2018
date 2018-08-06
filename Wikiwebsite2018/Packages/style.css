@@ -1,0 +1,96 @@
+/*-------------------------general stuff-------------------*/
+body {
+  position: relative;
+  /*Need this for scrollspy to work*/
+}
+.anchor {
+  /*These are invisible points for the sidebar and scrollspy.*/
+  display: block;
+  /*Add them to a new section of your text, add an ID to it, and then link to that ID in the sidebar*/
+  position: relative;
+  /* The "top -140px" is there so the top of the sections doesn't get hidden behind the navbar*/
+  top: -140px;
+  visibility: hidden;
+}
+.fakeimg {
+  height: 200px;
+  background: #aaa;
+}
+
+/*--------------Parallax (will probably not use)--------------*/
+.parallax {
+  /* A parallax is background images that change as you scroll*/
+  height: 700px;
+  /* They are basically div-elements with background images that doesn't scoll with the screen*/
+  background-attachment: fixed;
+  /* To make the images scroll as well but at a lower speed, another plugin is required, MDBootstrap for example*/
+  background-position: center -50px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/*----------------------The navbar----------------------------*/
+#navbar {
+  box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+/*----------------------The sidebar---------------------------*/
+.nav-pills>li>a {
+  /* Changing the color of the pills in the navbar from the boostrap default of blue,*/
+  color: #37474F!important;
+  /* to the same dark grey as in the navbar (boostrap dark theme:special)*/
+}
+.nav-pills>li>a.active {
+  color: #FFFFFF!important;
+  background-color: #37474F!important;
+}
+
+/*------------------------Accordion---------------------*/
+#accordion {
+  text-align: center;
+}
+#accordion>div>div>h5>button {
+  color: #37474F!important;
+}
+
+/*----------------Pictures and carousel---------------*/
+.team-pictures {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 5px;
+}
+.team-pictures>a>h5 {
+  padding: 7px;
+  color: #37474F!important;
+}
+.carousel {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/*------------Footer (taken from the 2017 team, might need to modify)------------*/
+footer {
+  text-align: center;
+}
+.footerimg {
+  max-height: 100px;
+  max-width: 200px;
+}
+.footerlogo {
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 1.5em;
+}
+.footerlogo .on,
+.footerlogo:hover .off {
+  display: block;
+}
+.footerlogo:hover .on,
+.footerlogo .off {
+  display: none;
+}
+footer>div>p>span>a {
+  font-size:large;
+  color: #37474F!important;
+}
+footer>div>p>span>a.active {
+  color: #37474F!important;
+}
