@@ -98,3 +98,5 @@ models = {modelSbo modelBth modelEre modelCancer}; %define cell strucutre of mod
 out = superModelFluxes(superModel); % contains summary of all exchange rxns
 
 % NEXT NEED TO CREATE STRUCTURE FOR ENVIRONMENTAL CONCENTRATIONS 
+
+exEnv = generateExEnv

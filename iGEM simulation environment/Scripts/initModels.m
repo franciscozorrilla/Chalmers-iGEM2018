@@ -20,6 +20,63 @@ function [superModel] = initModels(models)
 %
 %   Francisco Zorrilla, 05-08-2018
 
+
+exComp = [];
+for z =1:length(models) % find extracellular compartment in each model
+   for o=1:length(models{z}.compNames)
+        if strcmpi(models{z}.compNames(o),'extracellular')
+             exComp(z) = o;
+        elseif strcmpi(models{z}.compNames(o),'e')
+             exComp(z) = o;
+        end
+   end
+   
+   %before mergComp, get IDs/idxs of all metabolites present in extracellular comp, then add transport rxns for these from [s] to [e] after compMerge
+   exMetId = [];
+   for r=1:length(models{z}.metComps)
+       if models{z}.metComps(r) == exComp(z)
+           exMetId(r) = true;
+       else
+           exMetId(r) = false;
+       end
+   end
+   exMetId = transpose(logical(exMetId));
+   
+   %metsToAdd = {};  %INSTEAD OF ADDING METS AGAIN, ADD EXCH RXNS FOR 'e' METS 
+   %metsToAdd = struct;
+   %metsToAdd.mets = models{z}.mets(exMetId);
+   %metsToAdd.metNames = models{z}.metNames(exMetId);
+   %metsToAdd.compartments = 'e'; %this will be fed into addMets(), look at help file to add more parameters 
+   
+   if isempty(exComp(z)) % IF ERROR IN THIS LINE, READ EM BELLOW
+        EM=['The extracellular compartement in model' models{z}.id ' could not be identified'];
+        dispEM(EM,false);
+   else %rename extracellular compartments for consistency
+        models{z}.comps(exComp(z))= {'e'};
+        models{z}.compNames(exComp(z))= {'extracellular'};
+   end
+   
+   [models{z}, addedRxns]=addExchangeRxns(models{z},'both',models{z}.mets(exMetId));
+   
+   %merge compartments in each GEM for simpler models
+   models{z} = mergeCompartments(models{z}); 
+   models{z}.comps(1,1) = {['c_' models{z}.id]};
+   models{z}.comps(2,1) = {['e']};
+   models{z}.compNames(1,1) = {[models{z}.id ' Cytoplasm']};
+   models{z}.compNames(2,1) = {['Extracellular']};
+   
+   %I = ismember(metsToAdd.mets,models{z}.mets); %make sure mets to add are not present in model
+   %metsToAdd.mets = metsToAdd.mets(~I);
+   %metsToAdd.metNames = metsToAdd.metNames(~I);
+   %models{z}=addMets(models{z},metsToAdd); % works but had to comment out 2 different checks (metName and metId) from addMets fucntion
+   
+
+   
+   if isfield(models{z},'compOutside') % delete this field if present
+       models{z} = rmfield(models{z},'compOutside');
+   end
+end
+
 ids = {};
 exchangeRxns = {};
 exchangeRxnsNames = {};
@@ -95,10 +152,12 @@ superModel.ExchangeFluxes = exchangeFluxes;
 %
 %for w=1:length(models) 
 %   for r=1:length(superModel.ExchangeFluxes{w})
-%       if superModel.SubModels{w}.lb(r) == superModel.SubModels{w}.ub(r)
-%           blockedRxns{w,r}= superModel.RxnName{w}(r);
+%       if superModel.SubModels{w}.lb(r) == 0 && superModel.SubModels{w}.ub(r) == 0
+%           blockedRxns{r}= superModel.RxnName{w}(r);
 %       end
 %   end
+%   superModel.BlockedRxns{w} = [blockedRxns];
 %end
+
 
 end
