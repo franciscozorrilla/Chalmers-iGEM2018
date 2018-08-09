@@ -20,7 +20,7 @@ body {
 /*--------------Parallax (will probably not use)--------------*/
 .parallax {
   /* A parallax is background images that change as you scroll*/
-  height: 700px;
+  height: 50vh;
   /* They are basically div-elements with background images that doesn't scoll with the screen*/
   background-attachment: fixed;
   /* To make the images scroll as well but at a lower speed, another plugin is required, MDBootstrap for example*/
@@ -33,7 +33,6 @@ body {
 #navbar {
   box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5);
 }
-
 /*----------------------The sidebar---------------------------*/
 .nav-pills>li>a {
   /* Changing the color of the pills in the navbar from the boostrap default of blue,*/
