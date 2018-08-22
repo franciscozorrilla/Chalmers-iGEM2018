@@ -1,14 +1,14 @@
-.mynav {
-  background-image: url("Pictures/elements/navbar.png");
-  height:110px;
-  background-size:100% 110%;
-}
-.navbar {
-  background-color: transparent !important;
-}
 
-.navbar .navbar-nav {
-  margin: 0 auto;
+.navbar {
+   background-color: transparent !important;
+   height:110px; 
+  margin-left:150px !important;
+margin-right:150px !important;  
+}
+.navbar-brand {
+  margin: 0;
+  padding: 0;
+    text-align: center;
 }
 .nav-link {
   font-size: 0.8em;
