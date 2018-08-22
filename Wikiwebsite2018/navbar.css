@@ -1,0 +1,40 @@
+.mynav {
+  background-image: url("Pictures/elements/navbar.png");
+  height:110px;
+  background-size:100% 110%;
+}
+.navbar {
+  background-color: transparent !important;
+}
+
+.navbar .navbar-nav {
+  margin: 0 auto;
+}
+.nav-link {
+  font-size: 0.8em;
+  font-family: Courier New;
+  font-weight: bolder;
+  color: #000000 !important
+ }
+
+.dropdown-item{
+  color: #000000;
+  font-family: Courier New;
+ font-size: 0.7em;
+    font-weight: bolder;
+}
+
+.dropdown-menu {
+  background-color: rgba(175, 233, 221, 50);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 238, 170, 0.3);
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+.dropdown:hover .dropdown-menu {
+   display: block;
+}
