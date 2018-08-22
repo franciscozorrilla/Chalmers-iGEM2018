@@ -93,3 +93,7 @@ footer>div>p>span>a {
 footer>div>p>span>a.active {
   color: #37474F!important;
 }
+/*-----------------Background image in description----------------------------*/
+.descbackground {
+  background-image: url('Pictures/elements/gut snd pills.png');
+}
