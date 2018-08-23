@@ -30,7 +30,9 @@ body {
 }
 
 /*----------------------The navbar----------------------------*/
-
+.navbar {
+  
+}
 /*----------------------The sidebar---------------------------*/
 .nav-pills>li>a {
   /* Changing the color of the pills in the navbar from the boostrap default of blue,*/
@@ -69,7 +71,7 @@ footer {
 }
 .footerimg {
   max-height: 100px;
-  max-width: 200px;
+  max-width: 150px;
 }
 .footerlogo {
   display: inline-block;
@@ -94,4 +96,50 @@ footer>div>p>span>a.active {
 /*-----------------Background image in description----------------------------*/
 .descbackground {
   background-image: url('Pictures/elements/gut snd pills.png');
+}
+
+/*--------------The navbar----------------*/
+.navbar {
+  /*background-color: transparent !important;*/
+  
+  /*height:110px;
+  margin-left: 150px !important;
+  margin-right: 150px !important;*/
+}
+
+#navbar {
+  box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5); /* I will debate you on this, the shadow looks good!*/
+}
+.navbar-brand {
+  /*margin: 0;
+  padding: 0;
+  text-align: center;*/
+}
+
+.nav-link {
+  /*font-size: 0.8em;
+  font-weight: bolder;
+  color: #000000 !important*/
+}
+
+.dropdown-item {
+  /*color: #000000;
+  font-size: 0.7em;
+  font-weight: bolder;*/
+}
+
+.dropdown-menu {
+  background-color: rgba(175, 233, 221, 50);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 238, 170, 0.3);
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
