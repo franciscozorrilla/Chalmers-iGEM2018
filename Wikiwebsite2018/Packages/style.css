@@ -1,8 +1,10 @@
 /*-------------------------general stuff-------------------*/
+
 body {
   position: relative;
   /*Need this for scrollspy to work*/
 }
+
 .anchor {
   /*These are invisible points for the sidebar and scrollspy.*/
   display: block;
@@ -12,12 +14,14 @@ body {
   top: -140px;
   visibility: hidden;
 }
+
 .fakeimg {
   height: 200px;
   background: #aaa;
 }
 
 /*--------------Parallax (will probably not use)--------------*/
+
 .parallax {
   /* A parallax is background images that change as you scroll*/
   height: 50vh;
@@ -29,103 +33,92 @@ body {
   background-size: cover;
 }
 
-/*----------------------The navbar----------------------------*/
-.navbar {
-  
-}
 /*----------------------The sidebar---------------------------*/
+
 .nav-pills>li>a {
   /* Changing the color of the pills in the navbar from the boostrap default of blue,*/
   color: #37474F!important;
   /* to the same dark grey as in the navbar (boostrap dark theme:special)*/
 }
+
 .nav-pills>li>a.active {
   color: #FFFFFF!important;
   background-color: #37474F!important;
 }
 
 /*------------------------Accordion---------------------*/
+
 #accordion {
   text-align: center;
 }
+
 #accordion>div>div>h5>button {
   color: #37474F!important;
 }
 
 /*----------------Pictures and carousel---------------*/
+
 .team-pictures {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
   margin: 5px;
 }
+
 .team-pictures>a>h5 {
   padding: 7px;
   color: #37474F!important;
 }
+
 .carousel {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /*------------Footer (taken from the 2017 team, might need to modify)------------*/
+
 footer {
   text-align: center;
 }
+
 .footerimg {
   max-height: 100px;
   max-width: 150px;
 }
+
 .footerlogo {
   display: inline-block;
   vertical-align: bottom;
   padding: 1.5em;
 }
+
 .footerlogo .on,
 .footerlogo:hover .off {
   display: block;
 }
+
 .footerlogo:hover .on,
 .footerlogo .off {
   display: none;
 }
+
 footer>div>p>span>a {
-  font-size:large;
+  font-size: large;
   color: #37474F!important;
 }
+
 footer>div>p>span>a.active {
   color: #37474F!important;
 }
+
 /*-----------------Background image in description----------------------------*/
+
 .descbackground {
-  background-image: url('Pictures/elements/gut snd pills.png');
+  background-image: url('/Pictures/elements/gut snd pills.png');
 }
 
 /*--------------The navbar----------------*/
-.navbar {
-  /*background-color: transparent !important;*/
-  
-  /*height:110px;
-  margin-left: 150px !important;
-  margin-right: 150px !important;*/
-}
 
 #navbar {
-  box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5); /* I will debate you on this, the shadow looks good!*/
-}
-.navbar-brand {
-  /*margin: 0;
-  padding: 0;
-  text-align: center;*/
-}
-
-.nav-link {
-  /*font-size: 0.8em;
-  font-weight: bolder;
-  color: #000000 !important*/
-}
-
-.dropdown-item {
-  /*color: #000000;
-  font-size: 0.7em;
-  font-weight: bolder;*/
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+  /* I will fight you on this, the shadow looks good!*/
 }
 
 .dropdown-menu {
@@ -142,4 +135,60 @@ footer>div>p>span>a.active {
 
 .dropdown:hover .dropdown-menu {
   display: block;
+}
+
+/*--------------------Code for main page--------------------------*/
+.main-back {
+  background-image: url("../Pictures/elements/main_images/sfondo-carta.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hospital {
+  background-color: #FFFFFF;
+  height: 80vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.project {
+  background-color: #A0C8C3FF;
+  height: 80vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.modelling {
+  background-color: #FFC6C3FF;
+  height: 80vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hp {
+  background-color: #FDFFC2FF;
+  height: 80vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.margin-h5 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.margin-h6 {
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 4px;
 }
