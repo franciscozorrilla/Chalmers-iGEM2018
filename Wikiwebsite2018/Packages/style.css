@@ -111,7 +111,11 @@ footer>div>p>span>a.active {
 /*-----------------Background image in description----------------------------*/
 
 .descbackground {
-  background-image: url('/Pictures/elements/gut snd pills.png');
+  background-image: url('../Pictures/elements/gut_and_pills.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
 }
 
 /*--------------The navbar----------------*/
@@ -138,6 +142,7 @@ footer>div>p>span>a.active {
 }
 
 /*--------------------Code for main page--------------------------*/
+
 .main-back {
   background-image: url("../Pictures/elements/main_images/sfondo-carta.png");
   background-position: center;
