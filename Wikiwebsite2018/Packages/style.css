@@ -130,9 +130,10 @@ footer>div>p>span>a.active {
 }
 
 .dropdown-item:hover {
-  background-color: rgba(255, 238, 170, 0.3);
+  /*background-color: rgba(255, 238, 170, 0.3);*/
+  background-color: #84e1ce;
 }
-
+/*
 .dropdown-toggle::after {
   display: none;
 }
@@ -140,7 +141,7 @@ footer>div>p>span>a.active {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
-
+*/
 /*--------------------Code for main page--------------------------*/
 
 .main-back {
@@ -151,40 +152,27 @@ footer>div>p>span>a.active {
   position: relative;
 }
 
-.hospital {
-  background-color: #FFFFFF;
+.main-section {
   height: 80vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+}
+.hospital {
+  background-color: #FFFFFF;
 }
 
 .project {
   background-color: #A0C8C3FF;
-  height: 80vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
 }
 
 .modelling {
   background-color: #FFC6C3FF;
-  height: 80vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
 }
 
 .hp {
   background-color: #FDFFC2FF;
-  height: 80vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
 }
 
 .margin-h5 {
