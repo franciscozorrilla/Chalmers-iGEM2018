@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>Project description - iGEM Chalmers-Gothenburg 2018</title>
   <meta charset="utf-8">
@@ -8,7 +7,6 @@
   <meta name="author" content="Jacob Sjölin, Cecilia Trivellin">
   <meta name="description" content="Project description">
   <meta name="keywords" content="iGEM, yeast, cancer, colon, gas vesicles, ultrasound">
-
   <!---------------------------------------- BOOTSTRAP & JQUERY----------------------------------------->
   <link href="Packages/bootstrap-4.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="Packages/style.css" rel="stylesheet">
@@ -21,21 +19,17 @@
     $(document).ready(function() {
       // Add smooth scrolling to all links
       $("a").on('click', function(event) {
-
         // Make sure this.hash has a value before overriding default behavior
         if (this.hash !== "") {
           // Prevent default anchor click behavior
           event.preventDefault();
-
           // Store hash
           var hash = this.hash;
-
           // Using jQuery's animate() method to add smooth page scroll
           // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
           $('html, body').animate({
             scrollTop: $(hash).offset().top
           }, 800, function() {
-
             // Add hash (#) to URL when done scrolling (default click behavior)
             window.location.hash = hash;
           });
@@ -51,18 +45,14 @@
     });
   </script>
 </head>
-
 <body data-spy="scroll" data-target="#mySidebar" data-offset="200">
-
   <!-----------------------------The header-------------------------->
   <div class="jumbotron text-center" style="margin-bottom:0">
     <h1>Di<b>Yeast</b>ive</h1>
     <p>Ultrasound detectible cancer treatment</p>
   </div>
-
   <!-------------------------------The navbar--------------------------------->
   <nav id="navbar" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top"></nav>
-
   <!---------------------------Everything under header and navbar------------------->
   <div class="container-fluid descbackground text-center" style="margin-top:30px;">
     <img src="Pictures/elements/gut_and_pills.png" style="visibility: hidden; max-width: 100%; position: relative;" />
@@ -77,7 +67,7 @@
       <div class="col-6 d-flex flex-column justify-content-center align-content-center">
         <div style="margin-left: 20%; background-color:rgba(255,255,255,0.5); border-radius: 5%;">
           <h4>
-            Detection
+            Anchoring
           </h4>
           <p style="max-width:100%;">
             isghi sgihsduioghish dgoghpzsuogh fizghfhgo åfuzgh uiåf zdhgufhzg fhzdioå ghfj zdgiåh fiozdghf uizdghu ofz dhg ioåf dugio åf jzghf´z dhz dfhi oåjz
@@ -85,21 +75,21 @@
         </div>
       </div>
       <div class="col-6">
-        <a href="Detection.html">
+        <a href="Project.html#">
           <img src="Pictures/elements/attaching prj.png" alt="Yeast attaching on cancer cells" style="width: 80%; border-radius: 50%;"/>
         </a>
       </div>
     </div>
     <div class="row" style="position: absolute; top: 50%;">
       <div class="col-6">
-        <a href="Monitoring.html">
+        <a href="Project.html#Detection">
           <img src="Pictures/elements/gas_bubbles.png" alt="Yeast attaching on cancer cells" style="width: 80%; border-radius: 50%;"/>
         </a>
       </div>
       <div class="col-6 d-flex flex-column justify-content-center align-content-center">
         <div style="margin-right: 20%; background-color:rgba(255,255,255,0.5); border-radius: 5%;">
           <h4>
-            Monitoring
+            Detection
           </h4>
           <p style="max-width:100%;">
             isghi sgihsduioghish dgoghpzsuogh fizghfhgo åfuzgh uiåf zdhgufhzg fhzdioå ghfj zdgiåh fiozdghf uizdghu ofz dhg ioåf dugio åf jzghf´z dhz dfhi oåjz
@@ -119,7 +109,7 @@
         </div>
       </div>
       <div class="col-6">
-        <a href="Treatment.html">
+        <a href="Project.html#Treatment">
           <img src="Pictures/elements/anticancer.png" alt="Yeast attaching on cancer cells" style="width: 80%; border-radius: 50%;"/>
         </a>
       </div>
@@ -128,5 +118,4 @@
   <!----------------------------The footer------------------------>
   <div id="footer"></div>
 </body>
-
 </html>

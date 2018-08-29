@@ -11,7 +11,7 @@ body {
   /*Add them to a new section of your text, add an ID to it, and then link to that ID in the sidebar*/
   position: relative;
   /* The "top -140px" is there so the top of the sections doesn't get hidden behind the navbar*/
-  top: -140px;
+  top: -150px;
   visibility: hidden;
 }
 
@@ -122,7 +122,6 @@ footer>div>p>span>a.active {
 
 #navbar {
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
-  /* I will fight you on this, the shadow looks good!*/
 }
 
 .dropdown-menu {
