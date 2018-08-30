@@ -1,0 +1,50 @@
+odeoptions = odeset('NonNegative',7:13);
+
+tic
+[t,xa] = ode113(@(t,x)f(t,x,superModel),[0 48],[0.1 1 1 0.2 0.5 5 0.1 0.1 1 1 0.5 0.1 0.1],odeoptions); 
+toc
+
+Elapsed time is 5516.032336 seconds.
+>> 5516/60
+
+ans =
+
+   91.9333
+
+
+%Glucose uptake kinetics
+g1 =(50*x(7)/(10+x(7)));
+g2 =(50*x(7)/(10+x(7)));
+g3 =(40*x(7)/(10+x(7)));
+g5 =(50*x(7)/(10+x(7)));
+g6 =(10*x(7)/(10+x(7)));
+
+%Amino acid pool uptake kinetics
+aa5 =(5*x(8)/(10+x(8)));
+aa6 =(x(8)/(10+x(8)));
+
+%Water uptake kinetics
+h2 =(70*x(9)/(10+x(9)));
+h3 =(60*x(9)/(10+x(9)));
+h6 =(50*x(9)/(10+x(9)));
+
+%Oxygen uptake kinetics
+o1 =(40*x(10)/(10+x(10)));
+o5 =(60*x(10)/(10+x(10)));
+o6 =(30*x(10)/(10+x(10)));
+
+%Phosphate uptake kinetics
+p1 =(30*x(11)/(10+x(11)));
+p2 =(50*x(11)/(10+x(11)));
+p3 =(40*x(11)/(10+x(11)));
+p4 =(60*x(11)/(10+x(11)));
+p5 =(40*x(11)/(10+x(11)));
+
+%Carbon dioxide uptake kinetics
+c4 = (50*x(12)/(10+x(12)));
+
+%Ammonia uptake kinetics
+am1 =(40*x(13)/(10+x(13)));
+am2 =(50*x(13)/(10+x(13)));
+am3 =(60*x(13)/(10+x(13)));
+am4 =(20*x(13)/(10+x(13)));
