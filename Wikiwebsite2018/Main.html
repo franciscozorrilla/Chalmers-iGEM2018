@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!--------------Welcome to the big page of everything. Here we gather elements that we want to experiment ----------
-      -----------------with before adding them to the real pages that are going to become the wiki.-------------------->
-
 <head>
   <title>iGEM Chalmers-Gothenburg 2018</title>
   <meta charset="utf-8">
@@ -11,11 +7,11 @@
   <meta name="author" content="Jacob Sjölin, Cecilia Trivellin">
   <meta name="description" content="Main page of iGEM Chalmers-Gothenburg 2018">
   <meta name="keywords" content="iGEM, yeast, cancer, colon, gas vesicles, ultrasound">
-
   <!---------------------------------------- BOOTSTRAP & JQUERY----------------------------------------->
   <link href="Packages/bootstrap-4.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="Packages/style.css" rel="stylesheet">
   <link href="Packages/fontawesome-free-5.1.0-web/fontawesome-free-5.1.0-web/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
   <!--load all styles -->
   <script src="Packages/jquery-3.3.1.js" type="text/javascript"></script>
   <script src="Packages/bootstrap-4.1.1-dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
@@ -24,21 +20,17 @@
     $(document).ready(function() {
       // Add smooth scrolling to all links
       $("a").on('click', function(event) {
-
         // Make sure this.hash has a value before overriding default behavior
         if (this.hash !== "") {
           // Prevent default anchor click behavior
           event.preventDefault();
-
           // Store hash
           var hash = this.hash;
-
           // Using jQuery's animate() method to add smooth page scroll
           // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
           $('html, body').animate({
             scrollTop: $(hash).offset().top
           }, 800, function() {
-
             // Add hash (#) to URL when done scrolling (default click behavior)
             window.location.hash = hash;
           });
@@ -47,125 +39,149 @@
     });
   </script>
   <!----------------------Script for loading navbar and footer---------------------->
-  <script type="text/javascript"> 
-      $(function(){
-        $("#navbar").load("navbar.html");
-        $("#footer").load("footer.html");
-      });
-    </script>
-
+  <script type="text/javascript">
+    $(function() {
+      $("#navbar").load("navbar.html");
+      $("#footer").load("footer.html");
+    });
+  </script>
   <!--------------------------Links for stuff instead of packages, just in case------------------------------>
   <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">-->
   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>-->
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>-->
 </head>
-
 <!---------------------------Start of body---------------------------->
-
 <!--------------Enabling scrollspy and links it to the sidebar--------->
-
 <body data-spy="scroll" data-target="#mySidebar" data-offset="200">
-
   <!-----------------------------The header-------------------------->
   <div class="jumbotron text-center" style="margin-bottom:0">
     <h1>Di<b>Yeast</b>ive</h1>
     <p>Ultrasound detectible cancer treatment</p>
   </div>
-
   <!-------------------------------The navbar--------------------------------->
-  <nav id="navbar" class="navbar navbar-expand-md bg-dark navbar-dark sticky-top" style="box-shadow:0px 6px 10px rgba(0, 0, 0, 0.5)"></nav>
-  
-  <!---------------------------Everything under header and navbar------------------->
-  <div class="container-fluid" style="margin-top:30px;">
-    <div class="row">
-
-      <!-------------------The sidebar-------------------->
-      <div class="col-sm-2">
-        <div class="d-none d-md-block" style="position:sticky; top:100px;">
-          <h4>Navigation</h4>
-          <nav id="mySidebar">
-            <ul class="nav nav-pills flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="#section1">About us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#section2">Project description</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#section3">Some stuff</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#section4">Some other stuff</a>
-              </li>
-            </ul>
-            <hr class="d-sm-none">
-          </nav>
-        </div>
+  <nav id=navbar class="mynav navbar-expand-md bg-dark navbar-dark sticky-top"></nav>
+  <!----------------------Background part-------------------------->
+  <div class="container-fluid text-center">
+    <div class="row hospital main-section text-center">
+      <div class="col-md-7 main-back d-flex flex-column justify-content-center">
+        <h1>
+          Colorectal cancer and you: a shitty story
+        </h1>
+        <img class="img-fluid" src="Pictures/elements/main_images/main-hos-ris.png" alt="hospital" style="max-width:100%;">
       </div>
-
-      <!-------------------Start of main elements-------------------->
-      <div class="col-sm-10 col-lg-8">
-        <!---------------------Some paragraph sections, with pictures----------------->
-        <h1> Main text region </h1>
-        <h2>About iGEM Chalmers- Gothenburg</h2>
-        <a class="anchor" id="section1"></a>
-        <h5>The dream team:</h5>
-        <img class="img-fluid" src="Pictures/Lund/Group_photo_pose_Lund.jpg" alt="The dream team">
-        <p>Look at these sexy fuckers.</p>
-        <p>"In 1972 a crack commando unit was sent to prison by a military court for a crime they didn't commit. These men and women promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government,
-          they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team."</p>
+      <div class="col-md-5 main-back d-flex flex-column justify-content-center">
         <br>
-        <h2>Project description</h2>
-        <a class="anchor" id="section2"></a>
-        <h5>Title description, Sep 2, 2017</h5>
-        <div class="fakeimg">Fake Image</div>
-        <p>Some text..</p>
-        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-        <br>
-        <h2>Some stuff</h2>
-        <a class="anchor" id="section3"></a>
-        <h5>Title description, Sep 2, 2017</h5>
-        <div class="fakeimg">Fake Image</div>
-        <p>Some text..</p>
-        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-        <br>
-        <h2>Some other stuff</h2>
-        <a class="anchor" id="section4"></a>
-        <h5>Title description, Sep 2, 2017</h5>
-        <div class="fakeimg">Fake Image</div>
-        <p>Some text..</p>
-        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <h2 class="margin-h1">A worldwide issue</h2>
+        <p>
+          Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+        </p>
       </div>
     </div>
-    <!--</div>-->
-
-    <!--<div class="container-fluid">-->
-    <div class="row">
-      <div class="col-sm-12" style="text-align:center; margin-top:80px;">
-        <!--------------Parallax element----------------------->
-        <h1>Parallax</h1>
-        <div style="padding:50px">
-          <h3>Here's us!</h3>
-          <p>Sitting on the jetty</p>
-        </div>
-        <div class="parallax" style="background-image:url('Pictures/Tjörn/Group_photo_jetty_Tjörn.jpg');"></div>
-        <div style="padding:50px">
-          <h3>Here's us again!</h3>
-          <p>Sliding away!</p>
-        </div>
-        <div class="parallax" style="background-image:url('Pictures/Tjörn/Sliding_on_ice_Tjörn.jpg');"></div>
-        <div style="padding:50px">
-          <h3>And once more!</h3>
-          <p>blablablablablablablablablablabla</p>
-        </div>
-        <div class="parallax" style="background-image:url('Pictures/Tjörn/Group_photo_Tjörn.jpg');"></div>
+    <!-----------------------Project part-------------------------------->
+    <div class="row project text-center main-section">
+      <div class="col-md-7 main-back d-flex flex-column justify-content-center">
+      <h1>
+        Our project
+      </h1>
+        <img class="img-fluid" src="Pictures/elements/main_images/main_prj_wlp.png" alt="hospital" style="max-width:100%;">
+      </div>
+      <div class="col-md-5 main-back d-flex flex-column justify-content-center">
+        <br>
+        <h2 class="margin-h2">Using yeast to combat cancer</h2>
+        <p>
+          Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+        </p>
+      </div>
+    </div>
+    <!------------------------Modelling part--------------------------->
+    <div class="row modelling main-section text-center">
+      <div class="col-md-7 main-back d-flex flex-column justify-content-center">
+      <h1>
+        Modelling
+      </h1>
+        <img class="img-fluid" src="Pictures/elements/main_images/main_mod_wlp.png" alt="hospital" style="max-width:100%;">
+      </div>
+      <div class="col-md-5 main-back d-flex flex-column justify-content-center">
+        <br>
+        <h2 class="margin-h3">Turning our project into math</h2>
+        <p>
+          Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+        </p>
+      </div>
+    </div>
+    <!---------------------------hp part---------------------------------->
+    <div class="row hp main-section text-center">
+      <div class="col-md-7 main-back d-flex flex-column justify-content-center">
+      <h1>
+        Human practices
+      </h1>
+        <img class="img-fluid" src="Pictures/elements/main_images/main_hp.png" alt="hospital" style="max-width:100%;">
+      </div>
+      <div class="col-md-5 main-back d-flex flex-column justify-content-center">
+        <br>
+        <h2 class="margin-h4">Our projects role in society</h2>
+        <p>
+          Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+        </p>
       </div>
     </div>
   </div>
-
-  <!----------------------------The footer------------------------>
+  <!--------------------------- fun facts ------------------------->
+  <div class="container text-center" style="padding:50px">
+    <h1 class="margin-h5">FUN FACTS:</h1>
+    <br>
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <img src="Pictures/elements/main_images/cofee.png" class="img-responsive" style="width:70%" alt="Image">
+        <p class="margin-h6">1440 COFFEE CUPS</p>
+      </div>
+      <div class="col-sm-3 text-center">
+        <img src="Pictures/elements/main_images/calendar.png" class="img-responsive" style="width:70%" alt="Image">
+        <p id="demo" class="margin-h6"></p>
+        <script>
+          // Set the date we're counting down to
+          var countDownDate = new Date("Oct 24, 2018 8:00:00").getTime();
+          // Update the count down every 1 second
+          var x = setInterval(function() {
+            // Get todays date and time
+            var now = new Date().getTime();
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Output the result in an element with id="demo"
+            document.getElementById("demo").innerHTML = days + "d " + hours + "h " +
+              minutes + "m " + seconds + "s ";
+            // If the count down is over, write some text 
+            if (distance < 0) {
+              clearInterval(x);
+              document.getElementById("demo").innerHTML = "EXPIRED";
+            }
+          }, 1000);
+        </script>
+        <p class="margin-h6">
+          DAYS TO JAMBOREE
+        </p>
+      </div>
+      <div class="col-sm-3 text-center">
+        <img src="Pictures/elements/main_images/felice.png" class="img-responsive" style="width:70%" alt="Image">
+        <p class="margin-h6">8 SATISFIED TEAM MEMBERS</p>
+      </div>
+      <div class="col-sm-3 text-center">
+        <img src="Pictures/elements/main_images/mirino.png" class="img-responsive" style="width:70%" alt="Image">
+        <p class="margin-h6">123 PROBLEMS SOLVED</p>
+      </div>
+    </div>
+  </div>
+  <!----------------footer-------------------->
   <div id="footer"></div>
 </body>
-
 </html>
