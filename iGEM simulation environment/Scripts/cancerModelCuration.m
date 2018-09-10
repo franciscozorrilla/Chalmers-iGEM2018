@@ -1,3 +1,24 @@
+% Replace proteinPool with glutamine 
+
+%exportToExcelFormat(modelCancerTest,'modelCancerTest.xlsx');
+
+modelCancer=setParam(modelCancer,'eq','EXC_IN_m90000c',0);
+modelCancer=setParam(modelCancer,'ub','HMR_9063',1000); %glutamine
+modelCancer=setParam(modelCancer,'ub','HMR_9038',1000); %histidine
+modelCancer=setParam(modelCancer,'ub','HMR_9041',1000); %lysine
+modelCancer=setParam(modelCancer,'ub','HMR_9043',1000); %phenylalanine
+modelCancer=setParam(modelCancer,'ub','HMR_9046',1000); %valine
+modelCancer=setParam(modelCancer,'ub','HMR_9044',1000); %threonine
+modelCancer=setParam(modelCancer,'ub','HMR_9045',1000); %tryptophan
+modelCancer=setParam(modelCancer,'ub','HMR_9042',1000); %methionine
+modelCancer=setParam(modelCancer,'ub','HMR_9040',1000); %leucine
+modelCancer=setParam(modelCancer,'ub','HMR_9039',1000); %isoleucine
+
+solCancerTest=solveLP(modelCancer,1);
+printFluxes(modelCancer,solCancerTest.x);
+checkRxn(modelCancer,'human_proteinPool')
+
+
 %% CANCER MODEL CURATION
 
 % Cancer model - growth achieved, but bounds seem to be unconstrained

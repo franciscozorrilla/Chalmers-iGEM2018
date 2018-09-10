@@ -1,3 +1,30 @@
+%% BLOCK AApool, ALLOW ESSENTIAL AA uptake
+
+modelColonTest=setParam(modelColonTest,'eq','EXC_IN_m90000c',0);
+modelColonTest=setParam(modelColonTest,'ub','HMR_9063',1000); %glutamine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9038',1000); %histidine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9041',1000); %lysine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9043',1000); %phenylalanine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9046',1000); %valine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9044',1000); %threonine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9045',1000); %tryptophan
+modelColonTest=setParam(modelColonTest,'ub','HMR_9042',1000); %methionine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9040',1000); %leucine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9039',1000); %isoleucine
+
+modelColonTest=setParam(modelColonTest,'ub','HMR_9062',1000); %aspargine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9066',1000); %arginine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9067',1000); %glycine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9064',1000); %tyrosine
+modelColonTest=setParam(modelColonTest,'ub','HMR_9065',1000); %cysteine
+
+solCancerTest=solveLP(modelColonTest,1);
+printFluxes(modelColonTest,solCancerTest.x);
+checkRxn(modelColonTest,'human_proteinPool')
+
+exportToExcelFormat(modelColonTest,'modelColonTest.xlsx');% Export to excel for inspection, no biomass function present! Obtain from HMR2 model
+
+
 %% Colon Model Curation
 
 modelColon = importModel('colon.xml');

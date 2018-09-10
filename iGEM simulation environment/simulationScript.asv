@@ -27,12 +27,12 @@
 
 cd('C:\Users\zorrilla\Desktop\iGEM simulation environment')
 
-%% 1. Load & Check Genome Scale Models
+%% 1.0 Load & Check Genome Scale Models
 % Please ensure that each model being loaded has had some degree of
 % curation, and can be used for simulation (i.e. has objective function,
 % set bounds, etc). This will be done in the following sections.
 
-%% Saccharomyces boulardii model - growth achieved
+%% 1.1 Saccharomyces boulardii model
 
 load('modelSbo.mat'); 
 modelSbo.id = 'Sbo';
@@ -54,7 +54,7 @@ solSbo=solveLP(modelSbo,1);
 printFluxes(modelSbo,solSbo.x);
 %exportToExcelFormat(modelSbo,'modelSbo.xlsx');
 
-%% Bacteroides thetaiotamicron model - growth achieved
+%% 1.2 Bacteroides thetaiotamicron model
 
 modelBth = importModel('iBth801 v1.00.xml');
 modelBth.id = 'Bth';
@@ -63,9 +63,9 @@ modelBth=setParam(modelBth,'lb','glcIn',0); % make glucose uptake irreversible
 modelBth=mergeCompartments(modelBth);
 solBth=solveLP(modelBth,1);
 printFluxes(modelBth,solBth.x);
-exportToExcelFormat(modelBth,'modelBth.xlsx');  
+%exportToExcelFormat(modelBth,'modelBth.xlsx');  
 
-%% Eubacterium rectale model - growth achieved
+%% 1.3 Eubacterium rectale model - growth achieved
 
 modelEre = importModel('iEre400 v1.00.xml');
 modelEre.id = 'Ere';
@@ -76,84 +76,19 @@ modelEre=setParam(modelEre,'lb','r114',0); % make phosphate uptake irreversible
 modelEre=mergeCompartments(modelEre);
 solEre=solveLP(modelEre,1);
 printFluxes(modelEre,solEre.x);
-exportToExcelFormat(modelEre,'modelEre.xlsx');
+%exportToExcelFormat(modelEre,'modelEre.xlsx');
 
-%% Cancer model - growth achieved, but bounds seem to be unconstrained
-
-modelCancer = load('HepG2.mat');
-modelCancer = modelCancer.HepG2model;
-modelCancer.id = 'Can';
-
-for q=1:length(modelCancer.subSystems)
-    modelCancer.subSystems{q,1}={modelCancer.subSystems{q,1}}; %Need to do this for exportToExcel() to work
-end
-modelCancer = rmfield(modelCancer,'unconstrained'); % Need to remove these fields for exportToExcel() and printFluxes() functions to work
-modelCancer = rmfield(modelCancer,'metMiriams'); 
-modelCancer = rmfield(modelCancer,'inchis');
-modelCancer = rmfield(modelCancer,'rxnComps');
-modelCancer = rmfield(modelCancer,'geneComps');
-
-modelCancer=setParam(modelCancer,'obj','HumanGrowth',1);
-[modelCancer, addedRxns]=addExchangeRxns(modelCancer,'in','m90000c'); % add protein pool exchange rxn
-canRxns= getExchangeRxns(modelCancer,'in'); %get exchange rxns going in
-modelCancer = setParam(modelCancer, 'eq', canRxns, 0); %constrain all exchange rxns going in 
-
-modelCancer = setParam(modelCancer,'lb',{'HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079','EXC_IN_m90000c'},-1); %allow for uptake/secretion of some mets
-modelCancer = setParam(modelCancer,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079','EXC_IN_m90000c','HumanGrowth','human_proteinPool','humanGrowthOut'},1); % allow for excretion/consumption of some mets
-modelCancer = setParam(modelCancer,'lb',{'HumanGrowth','human_proteinPool','humanGrowthOut','HMR_9047','HMR_9048','HMR_9058','HMR_9034','HMR_9072'},0);%constrain growth related rxns
-modelCancer = setParam(modelCancer,'ub',{'HMR_9073','HMR_9078','HMR_9079'},0);
-
-modelCancer = removeRxns(modelCancer,{'HMR_1592','HMR_1696','HMR_4271','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_0016','HMR_0017','HMR_1919','HMR_7568','HMR_7569','HMR_2141','HMR_4184','HMR_2585'});%these intercompartment transport rxns may become problematic after merging compartments
-modelCancer = mergeCompartments(modelCancer);
-solCancer=solveLP(modelCancer,1);
-printFluxes(modelCancer,solCancer.x);
-exportToExcelFormat(modelCancer,'modelCancer.xlsx');
-
-%% Colon tissue model 
-
-modelColon = importModel('colon.xml');
-modelColon.id = 'Col';
-modelColon = removeReactions(modelColon,{'HMR_1696','HMR_1849','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_1919','HMR_7568','HMR_7569','HMR_2585'}); %these intercompartment transport rxns may become problematic after merging compartments
-colRxns= getExchangeRxns(modelColon,'in'); % get exchange fluxes going in
-modelColon = setParam(modelColon, 'eq', colRxns, 0); %constrain fluxes going in
-modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},-1);
-modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},1);
-modelColon = mergeCompartments(modelColon);
-modelColon.genes = {''}; %insert dummy field to avoid errors with addRxns()
-
-clear metsToAdd % Make sure this structure is empty
-metsToAdd = {}; %Add proteinPool pseudo metabolite
-metsToAdd.mets = {'proteinPool'};
-metsToAdd.metNames = {'proteinPool'};
-metsToAdd.compartments = {'s'};
-modelColon=addMets(modelColon,metsToAdd);
-
-clear rxnToAdd % Make sure this structure is empty
-rxnToAdd.rxns={'OXPHOS_BALANCED','EXC_IN_m90000c','human_proteinPool','human_Maintenance'};%add balanced oxidative phosporylation rxn, AA exchange rxn and artificial AA pool rxn with same IDs as cancer model
-rxnToAdd.rxnNames={'Oxidative Phosphorylation (Balanced)','EXC_IN_m90000c','human_proteinPool','human_Maintenance'};
-rxnToAdd.equations={'ADP[s] + Pi[s] + 0.5 O2[s] + 2 H+[s] => ATP[s] + H2O[s]',' => proteinPool[s]','0.0937 alanine[s] + 0.0507 arginine[s] + 0.04 asparagine[s] + 0.04 aspartate[s] + 0.0142 cysteine[s] + 0.1118 glutamine[s] + 0.1831 glycine[s] + 0.0198 histidine[s] + 0.0309 isoleucine[s] + 0.0664 leucine[s] + 0.0571 lysine[s] + 0.0156 methionine[s] + 0.029 phenylalanine[s] + 0.0853 proline[s] + 0.0491 serine[s] + 0.0402 threonine[s] + 0.0072 tryptophan[s] + 0.019 tyrosine[s] + 0.0471 valine[s] <=> proteinPool[s]','ATP[s] + 6 H2O[s] + proteinPool[s] => ADP[s] + Pi[s] + H+[s]'};
-rxnToAdd.lb=[0,0,-1,0];
-rxnToAdd.ub=[1000,1,1,1000];
-modelColon=addRxns(modelColon,rxnToAdd,3,'',true);
-
-modelColon = setParam(modelColon,'obj','human_Maintenance',1);
-modelColon= setParam(modelColon,'eq',{'HMR_6916','OXPHOS_BALANCED'},0); %block unbalanced oxphos rxn, also had to block balanced oxphos 
-modelColon = rmfield(modelColon,'rxnComps');% only need to do after merging compartments for exportToExcel() to work
-
-modelColon = setParam(modelColon,'ub',{'HMR_9047'},0)
-modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9058','HMR_9078','HMR_9079'},0)
-
-solColon = solveLP(modelColon,1);
-printFluxes(modelColon,solColon.x);
-exportToExcelFormat(modelColon,'modelColon.xlsx');
-
-%% Methanobrevibacter smithii model
+%% 1.4 Methanobrevibacter smithii model
 % This model gave me a lot of trouble. It seems to contain many
 % gaps/isolated subnetworks, as can been seen from running
 % gapReport(modelMsi). To try to make this a functioning model I had to
 % unconstrain all reactions and create a biomass equation without the
 % metabolites that could not be obtained. To get methane production, I had
-% to introduce methane as a bi-product of growth.
+% to introduce methane as a bi-product of growth. This approach was 
+% discarded, as it was later it was found that
+% methane is produced at the same rate as aceteate is produced, therefore we
+% define the methane production equal to the rate of acetate comsumption in
+% the function f().
 
 modelMsi = importModel('iMsi385.xml');
 modelMsi.id = 'Msi';
@@ -172,7 +107,7 @@ modelMsi.genes = {''}; %insert dummy field to avoid errors with addRxns()
 clear rxnToAdd % Make sure this structure is empty
 rxnToAdd.rxns={'biomassMsi'};
 rxnToAdd.rxnNames={'biomassMsi'};
-rxnToAdd.equations={'0.5621 L-Alanine[s] + 0.3237 L-Arginine[s] + 0.2638 L-Asparagine[s] + 0.2638 L-Aspartate[s] + 50.2 ATP[s] + 0.1002 L-Cysteine[s] + 0.0331 dATP[s] + 0.0215 dGTP[s] + 0.288 L-Glutamine[s] + 0.288 L-Glutamate[s] + 0.6704 Glycine[s] + 0.2222 GTP[s] + 50.2 H2O[s] + 0.3179 L-Isoleucine[s] + 0.493 L-Leucine[s] + 0.3755 L-Lysine[s] + 0.1682 L-Methionine[s] + 0.2027 L-Phenylalanine[s] + 0.2419 L-Proline[s] + 0.2361 L-Serine[s] + 0.2776 L-Threonine[s] + 0.1509 L-Tyrosine[s] + 0.4631 L-Valine[s] => 50.2 ADP[s] + 50.2 Phosphate[s] + Biomass_msi[s] + 0.5 Methane[s]'};
+rxnToAdd.equations={'0.5621 L-Alanine[s] + 0.3237 L-Arginine[s] + 0.2638 L-Asparagine[s] + 0.2638 L-Aspartate[s] + 50.2 ATP[s] + 0.1002 L-Cysteine[s] + 0.0331 dATP[s] + 0.0215 dGTP[s] + 0.288 L-Glutamine[s] + 0.288 L-Glutamate[s] + 0.6704 Glycine[s] + 0.2222 GTP[s] + 50.2 H2O[s] + 0.3179 L-Isoleucine[s] + 0.493 L-Leucine[s] + 0.3755 L-Lysine[s] + 0.1682 L-Methionine[s] + 0.2027 L-Phenylalanine[s] + 0.2419 L-Proline[s] + 0.2361 L-Serine[s] + 0.2776 L-Threonine[s] + 0.1509 L-Tyrosine[s] + 0.4631 L-Valine[s] => 50.2 ADP[s] + 50.2 Phosphate[s] + Biomass_msi[s]'};
 rxnToAdd.lb=[0];
 rxnToAdd.ub=[1000];
 modelMsi=addRxns(modelMsi,rxnToAdd,3,'',true);
@@ -193,12 +128,107 @@ modelMsi = setParam(modelMsi,'lb',{'MethOut','actIn','H2In','CO2In'},0);
 modelMsi = setParam(modelMsi,'obj','biomassMsi',1);
 solMsi=solveLP(modelMsi,1);
 printFluxes(modelMsi,solMsi.x); %now model can grow and produce methane
-exportToExcelFormat(modelMsi,'modelMsi.xlsx');
+%exportToExcelFormat(modelMsi,'modelMsi.xlsx');
 
-%% Clean up workspace
-clear addedRxns canRxns colRxns q rxnToAdd
+%% 1.5 Cancer model
 
-%% 2. Initialize Models & Environment
+modelCancer = load('HepG2.mat');
+modelCancer = modelCancer.HepG2model;
+modelCancer.id = 'Can';
+
+for q=1:length(modelCancer.subSystems)
+    modelCancer.subSystems{q,1}={modelCancer.subSystems{q,1}}; %Need to do this for exportToExcel() to work
+end
+modelCancer = rmfield(modelCancer,'unconstrained'); % Need to remove these fields for exportToExcel() and printFluxes() functions to work
+modelCancer = rmfield(modelCancer,'metMiriams'); 
+modelCancer = rmfield(modelCancer,'inchis');
+modelCancer = rmfield(modelCancer,'rxnComps');
+modelCancer = rmfield(modelCancer,'geneComps');
+
+modelCancer=setParam(modelCancer,'obj','HumanGrowth',1);
+%[modelCancer, addedRxns]=addExchangeRxns(modelCancer,'in','m90000c'); % add protein pool exchange rxn
+canRxns= getExchangeRxns(modelCancer,'in'); %get exchange rxns going in
+modelCancer = setParam(modelCancer, 'eq', canRxns, 0); %constrain all exchange rxns going in 
+
+modelCancer = setParam(modelCancer,'lb',{'HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},-1); %allow for uptake/secretion of some mets
+modelCancer = setParam(modelCancer,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079','HumanGrowth','humanGrowthOut'},1); % allow for excretion/consumption of some mets
+modelCancer = setParam(modelCancer,'lb',{'HumanGrowth','humanGrowthOut','HMR_9047','HMR_9048','HMR_9058','HMR_9034','HMR_9072'},0);%constrain growth related rxns
+modelCancer = setParam(modelCancer,'ub',{'HMR_9073','HMR_9078','HMR_9079'},0);
+
+modelCancer=setParam(modelCancer,'ub','HMR_9063',1000); %glutamine
+modelCancer=setParam(modelCancer,'ub','HMR_9038',1000); %histidine
+modelCancer=setParam(modelCancer,'ub','HMR_9041',1000); %lysine
+modelCancer=setParam(modelCancer,'ub','HMR_9043',1000); %phenylalanine
+modelCancer=setParam(modelCancer,'ub','HMR_9046',1000); %valine
+modelCancer=setParam(modelCancer,'ub','HMR_9044',1000); %threonine
+modelCancer=setParam(modelCancer,'ub','HMR_9045',1000); %tryptophan
+modelCancer=setParam(modelCancer,'ub','HMR_9042',1000); %methionine
+modelCancer=setParam(modelCancer,'ub','HMR_9040',1000); %leucine
+modelCancer=setParam(modelCancer,'ub','HMR_9039',1000); %isoleucine
+
+modelCancer = removeRxns(modelCancer,{'HMR_1592','HMR_1696','HMR_4271','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_0016','HMR_0017','HMR_1919','HMR_7568','HMR_7569','HMR_2141','HMR_4184','HMR_2585'});%these intercompartment transport rxns may become problematic after merging compartments
+modelCancer = mergeCompartments(modelCancer);
+solCancer=solveLP(modelCancer,1);
+printFluxes(modelCancer,solCancer.x);
+%exportToExcelFormat(modelCancer,'modelCancer.xlsx');
+
+%% 1.6 Colon tissue model 
+
+modelColon = importModel('colon.xml');
+modelColon.id = 'Col';
+modelColon = removeReactions(modelColon,{'HMR_1696','HMR_1849','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_1919','HMR_7568','HMR_7569','HMR_2585'}); %these intercompartment transport rxns may become problematic after merging compartments
+colRxns= getExchangeRxns(modelColon,'in'); % get exchange fluxes going in
+modelColon = setParam(modelColon, 'eq', colRxns, 0); %constrain fluxes going in
+modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},-1);
+modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},1);
+modelColon = mergeCompartments(modelColon);
+modelColon.genes = {''}; %insert dummy field to avoid errors with addRxns()
+
+clear metsToAdd % Make sure this structure is empty
+metsToAdd = {}; %Add proteinPool pseudo metabolite
+metsToAdd.mets = {'proteinPool'};
+metsToAdd.metNames = {'proteinPool'};
+metsToAdd.compartments = {'s'};
+modelColon=addMets(modelColon,metsToAdd);
+modelColon.mets(2462)={'proteinPool'};%for some reason addMets fails to do this
+
+clear rxnToAdd % Make sure this structure is empty
+rxnToAdd.rxns={'human_proteinPool','human_Maintenance'};
+rxnToAdd.rxnNames={'human_proteinPool','human_Maintenance'};
+rxnToAdd.equations={'0.0937 alanine[s] + 0.0507 arginine[s] + 0.04 asparagine[s] + 0.04 aspartate[s] + 0.0142 cysteine[s] + 0.1118 glutamine[s] + 0.1831 glycine[s] + 0.0198 histidine[s] + 0.0309 isoleucine[s] + 0.0664 leucine[s] + 0.0571 lysine[s] + 0.0156 methionine[s] + 0.029 phenylalanine[s] + 0.0853 proline[s] + 0.0491 serine[s] + 0.0402 threonine[s] + 0.0072 tryptophan[s] + 0.019 tyrosine[s] + 0.0471 valine[s] <=> proteinPool[s]','ATP[s] + 6 H2O[s] + proteinPool[s] => ADP[s] + Pi[s] + H+[s]'};
+rxnToAdd.lb=[-1000,0];
+rxnToAdd.ub=[1000,1000];
+modelColon=addRxns(modelColon,rxnToAdd,3,'',true);
+
+modelColon = setParam(modelColon,'obj','human_Maintenance',1);
+modelColon = rmfield(modelColon,'rxnComps');% only need to do after merging compartments for exportToExcel() to work
+
+modelColon = setParam(modelColon,'ub',{'HMR_9047'},0)%constrain exch rxns to be irreversible
+modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9058','HMR_9073','HMR_9078','HMR_9079'},0)
+
+modelColon=setParam(modelColon,'ub','HMR_9063',1000); %glutamine
+modelColon=setParam(modelColon,'ub','HMR_9038',1000); %histidine
+modelColon=setParam(modelColon,'ub','HMR_9041',1000); %lysine
+modelColon=setParam(modelColon,'ub','HMR_9043',1000); %phenylalanine
+modelColon=setParam(modelColon,'ub','HMR_9046',1000); %valine
+modelColon=setParam(modelColon,'ub','HMR_9044',1000); %threonine
+modelColon=setParam(modelColon,'ub','HMR_9045',1000); %tryptophan
+modelColon=setParam(modelColon,'ub','HMR_9042',1000); %methionine
+modelColon=setParam(modelColon,'ub','HMR_9040',1000); %leucine
+modelColon=setParam(modelColon,'ub','HMR_9039',1000); %isoleucine
+
+modelColon=setParam(modelColon,'ub','HMR_9062',1000); %aspargine
+modelColon=setParam(modelColon,'ub','HMR_9066',1000); %arginine
+modelColon=setParam(modelColon,'ub','HMR_9067',1000); %glycine
+modelColon=setParam(modelColon,'ub','HMR_9064',1000); %tyrosine
+modelColon=setParam(modelColon,'ub','HMR_9065',1000); %cysteine
+
+solColon = solveLP(modelColon,1);
+printFluxes(modelColon,solColon.x);
+%exportToExcelFormat(modelColon,'modelColon.xlsx');
+
+
+%% 2.0 Initialize Models
 
 %define cell strucutre of models to be initialized
 models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
@@ -209,9 +239,60 @@ models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
 % contains summary of all exchange rxns
 out = superModelFluxes(superModel);
 
+%% 3.0 Define kinetic paramters, initial conditions & flow rates
 
-%% 3. Simulations
+[num, txt, raw] = xlsread('parameters.xlsx');
 
+
+sbo0 = num(75);
+bth0 = num(76);
+ere0 = num(77);
+msi0 = num(78);
+can0 = num(79);
+col0 = num(80);
+glu0 = num(81);
+wat0 = num(82);
+oxy0 = num(83);
+pho0 = num(84);
+amm0 = num(85);
+ace0 = num(86);
+Q0 = num(87);
+H0 = num(88);
+K0 = num(89);
+F0 = num(90);
+V0 = num(91);
+T0 = num(92);
+W0 = num(93);
+M0 = num(94);
+L0 = num(95);
+I0 = num(96);
+car0 = num(97);
+pro0 = num(98);
+but0 = num(99);
+met0 = num(100);
+mfa0 = num(101);
+myr0 = num(102);
+p280 = num(103);
+
+
+
+% Initial biomass concentrations
+%sbo0 = 5; bth0 = 15; ere0 = 15; msi0 = 5; can0 = 5; col0 = 15;
+
+% Initial susbtrate concentrations
+%glu0 = 1; wat0 = 1; oxy0 = 1; pho0 = 1; amm0 = 1; ace0 = 1;
+
+% Initial amino acid concentrations
+%Q0 = 1; H0 = 1; K0 = 1; F0 = 1; V0 = 1; T0 = 1; W0 = 1; M0 = 1; L0 = 1; I0 = 1;
+
+% Initial product concentrations
+%car0 = 0; pro0 = 0; but0 = 0; met0 = 0; mfa0 = 0; myr0 = 0; p280 = 0;
+
+% Summary
+initialConditions = [sbo0 bth0 ere0 msi0 can0 col0 glu0 wat0 oxy0 pho0 amm0 ace0 Q0 H0 K0 F0 V0 T0 W0 M0 L0 I0 car0 pro0 but0 met0 mfa0 myr0 p280];
+%kineticParams = [vmax_g1 vmax_g2 vmax_g3 vmax_g5 vmax_g6 ks_g1 ks_g2 ks_g3 ks_g5 ks_g6 vmax_o1 vmax_o5 vmax_o6 ks_o1 ks_o5 ks_o6 vmax_p1 vmax_p2 vmax_p3 vmax_p4 vmax_p5 ks_p1 ks_p2 ks_p3 ks_p4 ks_p5 vmax_am1 vmax_am2 vmax_am3 vmax_am4 vmax_ac4 ks_ac4 ks_am1 ks_am2 ks_am3 ks_am4 vmax_Q5 ks_Q5 vmax_H5 vmax_H6 ks_H5 ks_H6 vmax_K5 vmax_K6 ks_K5 ks_K6 vmax_F5 vmax_F6 ks_F5 ks_F6 vmax_V5 vmax_V6 ks_V5 ks_V6 vmax_T5 vmax_T6 ks_T5 ks_T6 vmax_W5 vmax_W6 ks_W5 ks_W6 vmax_M5 vmax_M6 ks_M5 ks_M6 vmax_L5 vmax_L6 ks_L5 ks_L6 vmax_I5 vmax_I6 ks_I5 ks_I6];
+
+%% 4.0 Simulations
 %{
 
 curves look better when models have their respective compartments merged. 
@@ -227,53 +308,63 @@ x(3):E.re biomass
 x(4):M.si biomass
 x(5):Cancer biomass
 x(6):Colon biomass
+
 SUBSTRATES
 x(7):Glucose
-x(8):Amino Acid Pool
-x(9):Water
-x(10):Oxygen
-x(11):Phosphate
-x(12):Ammonium
+x(8):Water
+x(9):Oxygen
+x(10):Phosphate
+x(11):Ammonium
+x(12):Acetate
+
+AMINO ACIDS
+x(13):Glutamine
+x(14):Histidine
+x(15):Lysine
+x(16):Phenylalanine
+x(17):Valine
+x(18):Threonine
+x(19):Tryptophan
+x(20):Methionine
+x(21):Leucine
+x(22):Isoleucine
+
 PRODUCTS
-x(13):Carbon dioxide
-x(14):Propanoate
-x(15):Butyrate
-x(16):Methane
-x(17):MFalpha2
-x(18):Myrosinase
+x(23):Carbon dioxide
+x(24):Propanoate
+x(25):Butyrate
+x(26):Methane
+x(27):MFalpha2
+x(28):Myrosinase
+x(29):P28
 
 %}
 
-%Glucose uptake kinetic parameters
-%vmax_g1
-%vmax_g2
-%vmax_g3
-%vmax_g5
-%vmax_g6
-%ks_g1
-%ks_g2
-%ks_g3
-%ks_g5
-%ks_g6
-
-%
-
-
-odeoptions = odeset('NonNegative',7:18);
+odeoptions = odeset('NonNegative',1:29);
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel),[0 10],[5 15 15 5 5 15 1 1 1 1 1 1 1 0 0 0 0 0],odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,num),[0 50], initialConditions ,odeoptions); 
 toc
 
-subplot(3,1,1)
+figure(1)
 plot(t,xa(:,1:6))
-title('Growth curves & Substrate/Product Concentrations')
-xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
+title('Growth curves')
+xlabel('Time (hours)'), ylabel('Concentration (g/L)')
 legend('S.bo Biomass','B.th Biomass','E.re Biomass','M.si Biomass', 'Cancer Biomass', 'Colon Biomass')
-subplot(3,1,2)
+
+figure(2)
+title('Substrates')
 plot(t,xa(:,7:12))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('Glucose','Amino Acid Pool','Water','Oxygen','Phosphate','Ammonium')
-subplot(3,1,3)
-plot(t,xa(:,13:18))
+legend('Glucose','Water','Oxygen','Phosphate','Ammonium','Acetate')
+
+figure(3)
+title('Amino acids')
+plot(t,xa(:,13:22))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('Carbon dioxide','Propanoate','Butyrate','Methane','MFalpha2','Myrosinase')
+legend('Glutamine','Histidine','Lysine','Phenylalanine','Valine','Threonine','Tryptophan','Methionine','Leucine','Isoleucine')
+
+figure(4)
+title('Products')
+plot(t,xa(:,23:29))
+xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
+legend('Carbon dioxide','Propanoate','Butyrate','Methane','MFalpha2','Myrosinase','P28')
