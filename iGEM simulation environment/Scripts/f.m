@@ -75,41 +75,43 @@ vmax_I5 = num(71); % mmol/gDCW*hr
 vmax_I6 = num(72); % mmol/gDCW*hr
 ks_I5 = num(73); % mmol/L
 ks_I6 = num(74); % mmol/L
+vmax_c4 = num(75); % mmol/L
+ks_c4 = num(76); % mmol/L
 
 %Define flow related terms
-sbof = num(104); % g/L
-bthf = num(105); % g/L
-eref = num(106); % g/L
-msif = num(107); % g/L
-canf = num(108); % g/L
-colf = num(109); % g/L
-gluf = num(110); % mmol/L
-watf = num(111); % mmol/L
-oxyf = num(112); % mmol/L
-phof = num(113); % mmol/L
-ammf = num(114); % mmol/L
-acef = num(115); % mmol/L
-Qf = num(116); % mmol/L
-Hf = num(117); % mmol/L
-Kf = num(118); % mmol/L
-Ff = num(119); % mmol/L
-Vf = num(120); % mmol/L
-Tf = num(121); % mmol/L
-Wf = num(122); % mmol/L
-Mf = num(123); % mmol/L
-Lf = num(124); % mmol/L
-If = num(125); % mmol/L
-carf = num(126); % mmol/L
-prof = num(127); % mmol/L
-butf = num(128); % mmol/L
-metf = num(129); % mmol/L
-mfaf = num(130); % mmol/L
-myrf = num(131); % mmol/L
-p28f = num(132); % mmol/L
-D = num(133); % 1/hr
-ACE = num(134);% 1/hr
-myrMW = num(135); % g/mmol
-mfaThresh = num(136); % mmol/L
+sbof = num(106); % g/L
+bthf = num(107); % g/L
+eref = num(108); % g/L
+msif = num(109); % g/L
+canf = num(110); % g/L
+colf = num(111); % g/L
+gluf = num(112); % mmol/L
+watf = num(113); % mmol/L
+oxyf = num(114); % mmol/L
+phof = num(115); % mmol/L
+ammf = num(116); % mmol/L
+acef = num(117); % mmol/L
+Qf = num(118); % mmol/L
+Hf = num(119); % mmol/L
+Kf = num(120); % mmol/L
+Ff = num(121); % mmol/L
+Vf = num(122); % mmol/L
+Tf = num(123); % mmol/L
+Wf = num(124); % mmol/L
+Mf = num(125); % mmol/L
+Lf = num(126); % mmol/L
+If = num(127); % mmol/L
+carf = num(128); % mmol/L
+prof = num(129); % mmol/L
+butf = num(130); % mmol/L
+metf = num(131); % mmol/L
+mfaf = num(132); % mmol/L
+myrf = num(133); % mmol/L
+p28f = num(134); % mmol/L
+D = num(135); % 1/hr
+ACE = num(136);% 1/hr
+myrMW = num(137); % g/mmol
+mfaThresh = num(138); % mmol/L
 
 %Glucose uptake kinetics
 g1 =(vmax_g1*x(7)/(ks_g1+x(7)));
@@ -184,12 +186,12 @@ I5 = (vmax_I5*x(22)/(ks_I5+x(22)));
 I6 = (vmax_I6*x(22)/(ks_I6+x(22)));
 
 %Carbon dioxide uptake kinetics
-c4 = (5*x(23)/(5+x(23)));
+c4 = (vmax_c4*x(23)/(ks_c4+x(23)));
 
 %Rule to make S.bo start Myrosinase production and adjust MFalpha2
 %production to account for limited protein pool
 if x(27)>= mfaThresh
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.0001); 
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.001); 
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.0001);
 end
 
@@ -268,16 +270,21 @@ superModel.SubModels{6} = setParam(superModel.SubModels{6},'ub','HMR_9039',I6);
 %Update carbon dioxide consumption
 superModel.SubModels{4} = setParam(superModel.SubModels{4},'ub','CO2In',c4);
 
-%FBA for each model
+%Perform FBA for each model
 solSbo = solveLP(superModel.SubModels{1},1);
 FBAsol{1} = solSbo.f;
-%Need to include this check to see if protein synthesis load is too heavy
+%Need to a checking step to see if protein synthesis load is too heavy
 %for S.bo once substrates become limiting
-if isempty(FBAsol{1})
+if isempty(solSbo.f)
    dispEM('S.bo model was not able to be solved likely due to MFalpha2/Myrosinase production constraints, production stopped to check if model is solvable',false)
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0); 
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0);
+   solSbo = solveLP(superModel.SubModels{1},1)
    FBAsol{1} = solSbo.f;
+   %Check again
+   if isempty(solSbo.f)
+   dispEM('Model S.bo still not solvable after stopping protein production :(',false)    
+   end
 end
 
 solBth = solveLP(superModel.SubModels{2},1);

@@ -230,7 +230,7 @@ printFluxes(modelColon,solColon.x);
 
 
 %% 2.0 Initialize Models
-% To run this section go to the scripts folder
+% To run this section, go to the scripts folder
 
 %define cell strucutre of models to be initialized
 models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
@@ -249,35 +249,35 @@ out = superModelFluxes(superModel);
 [num, txt, raw] = xlsread('parameters.xlsx');
 
 % Define initial conditions
-sbo0 = num(75);
-bth0 = num(76);
-ere0 = num(77);
-msi0 = num(78);
-can0 = num(79);
-col0 = num(80);
-glu0 = num(81);
-wat0 = num(82);
-oxy0 = num(83);
-pho0 = num(84);
-amm0 = num(85);
-ace0 = num(86);
-Q0 = num(87);
-H0 = num(88);
-K0 = num(89);
-F0 = num(90);
-V0 = num(91);
-T0 = num(92);
-W0 = num(93);
-M0 = num(94);
-L0 = num(95);
-I0 = num(96);
-car0 = num(97);
-pro0 = num(98);
-but0 = num(99);
-met0 = num(100);
-mfa0 = num(101);
-myr0 = num(102);
-p280 = num(103);
+sbo0 = num(77);
+bth0 = num(78);
+ere0 = num(79);
+msi0 = num(80);
+can0 = num(81);
+col0 = num(82);
+glu0 = num(83);
+wat0 = num(84);
+oxy0 = num(85);
+pho0 = num(86);
+amm0 = num(87);
+ace0 = num(88);
+Q0 = num(89);
+H0 = num(90);
+K0 = num(91);
+F0 = num(92);
+V0 = num(93);
+T0 = num(94);
+W0 = num(95);
+M0 = num(96);
+L0 = num(97);
+I0 = num(98);
+car0 = num(99);
+pro0 = num(100);
+but0 = num(101);
+met0 = num(102);
+mfa0 = num(103);
+myr0 = num(104);
+p280 = num(105);
 
 % Summary
 initialConditions = [sbo0 bth0 ere0 msi0 can0 col0 glu0 wat0 oxy0 pho0 amm0 ace0 Q0 H0 K0 F0 V0 T0 W0 M0 L0 I0 car0 pro0 but0 met0 mfa0 myr0 p280];

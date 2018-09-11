@@ -75,6 +75,8 @@ vmax_I5 = num(71); % mmol/gDCW*hr
 vmax_I6 = num(72); % mmol/gDCW*hr
 ks_I5 = num(73); % mmol/L
 ks_I6 = num(74); % mmol/L
+vmax_c4 = num(75) % mmol/L
+ks_c4 = num(76); % mmol/L
 
 %Define flow related terms
 sbof = num(104); % g/L
@@ -110,15 +112,6 @@ D = num(133); % 1/hr
 ACE = num(134);% 1/hr
 myrMW = num(135); % g/mmol
 mfaThresh = num(136); % mmol/L
-
-%Rule to make S.bo start Myrosinase production and adjust MFalpha2
-%production to account for limited protein pool
-
-if x(27)>= mfaThresh
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.0001); 
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.0001);
-end
-
 
 %Glucose uptake kinetics
 g1 =(vmax_g1*x(7)/(ks_g1+x(7)));
@@ -193,7 +186,14 @@ I5 = (vmax_I5*x(22)/(ks_I5+x(22)));
 I6 = (vmax_I6*x(22)/(ks_I6+x(22)));
 
 %Carbon dioxide uptake kinetics
-c4 = (5*x(23)/(5+x(23)));
+c4 = (vmax_c4*x(23)/(ks_c4+x(23)));
+
+%Rule to make S.bo start Myrosinase production and adjust MFalpha2
+%production to account for limited protein pool
+if x(27)>= mfaThresh
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.001); 
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.0001);
+end
 
 %Update glucose consumption
 superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_1714',-g1); %g1 takes a negative sign to account for the way this uptake reaction is defined
@@ -270,16 +270,21 @@ superModel.SubModels{6} = setParam(superModel.SubModels{6},'ub','HMR_9039',I6);
 %Update carbon dioxide consumption
 superModel.SubModels{4} = setParam(superModel.SubModels{4},'ub','CO2In',c4);
 
-%FBA for each model
+%Perform FBA for each model
 solSbo = solveLP(superModel.SubModels{1},1);
 FBAsol{1} = solSbo.f;
-%Need to include this check to see if protein synthesis load is too heavy
+%Need to a checking step to see if protein synthesis load is too heavy
 %for S.bo once substrates become limiting
-if isempty(FBAsol{1})
-   dispEM('S.bo model was not able to be solved due to MFalpha2/Myrosinase production constraints, bound of production has been stopped to make model solvable',false)
+if isempty(solSbo.f)
+   dispEM('S.bo model was not able to be solved likely due to MFalpha2/Myrosinase production constraints, production stopped to check if model is solvable',false)
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0); 
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0);
+   solSbo = solveLP(superModel.SubModels{1},1)
    FBAsol{1} = solSbo.f;
+   
+   if isempty(solSbo.f)
+   dispEM('Model S.bo still not solvable after ',false)    
+   end
 end
 
 solBth = solveLP(superModel.SubModels{2},1);
