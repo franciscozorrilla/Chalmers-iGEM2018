@@ -29,13 +29,6 @@ https://downloads.yeastgenome.org/sequence/S288C_reference/orf_protein/orf_trans
 
 %}
 
-% Obtain bi-directional BLAST structure using FASTA files
-sboBlastStructure = getBlast('sbo','sbo_prot.faa',{'sce'},{'sce_prot.fasta'});
-% Save the BLAST structure
-save('sboBlastStructure.mat','sboBlastStructure');
-% In the future, load BLAST structure instead of re-running BLAST function
-load('sboBlastStructure.mat');
-
 %% 3. OBTAIN HIGH QUALITY Saccharomyces cerevisiae GEM
 
 %{
@@ -61,10 +54,11 @@ clear sol
 
 %% 4. GET Saccharomyces boulardii HOMOLOGY MODEL
 
+
 % To avoid keeping unneccesary old genes, the models should not have
 % "OR" relations in their grRules. To remove these, use expandModel()
 % to separate reactions that are annotated with isoenzymes into
-% multiple reactions. Warnings can be ignored.
+% multiple reactions. Warnings will be shown.
 modelSceExpanded=expandModel(modelSce);
 
 % Obtain homology model using getModelFromHomology() function with BLAST
