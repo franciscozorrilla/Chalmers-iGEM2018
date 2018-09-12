@@ -191,7 +191,7 @@ c4 = (vmax_c4*x(23)/(ks_c4+x(23)));
 %Rule to make S.bo start Myrosinase production and adjust MFalpha2
 %production to account for limited protein pool
 if x(27)>= mfaThresh
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.001); 
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.0005); 
    superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.0001);
 end
 
@@ -270,23 +270,46 @@ superModel.SubModels{6} = setParam(superModel.SubModels{6},'ub','HMR_9039',I6);
 %Update carbon dioxide consumption
 superModel.SubModels{4} = setParam(superModel.SubModels{4},'ub','CO2In',c4);
 
-%Perform FBA for each model
+%Perform FBA for modelSbo
 solSbo = solveLP(superModel.SubModels{1},1);
 FBAsol{1} = solSbo.f;
 %Need to a checking step to see if protein synthesis load is too heavy
 %for S.bo once substrates become limiting
 if isempty(solSbo.f)
-   dispEM('S.bo model was not able to be solved likely due to MFalpha2/Myrosinase production constraints, production stopped to check if model is solvable',false)
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0); 
-   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0);
-   solSbo = solveLP(superModel.SubModels{1},1)
+   dispEM('S.bo model not solvable likely due to MFalpha2/Myrosinase production constraints, try reducing protein synthesis load.',false)
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.00005); 
+   superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.00001);
+   solSbo = solveLP(superModel.SubModels{1},1);
    FBAsol{1} = solSbo.f;
-   %Check again
+   %Check if no solution after decreasing protein production by 10%
    if isempty(solSbo.f)
-   dispEM('Model S.bo still not solvable after stopping protein production :(',false)    
+      dispEM('S.bo model still not solvable after lowering protein production by 10 percent!',false)
+      superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0.000005); 
+      superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0.000001);
+      solSbo = solveLP(superModel.SubModels{1},1);
+      FBAsol{1} = solSbo.f;
+      %Check if no solution after decreasing protein production by 100%
+      if isempty(solSbo.f)
+         dispEM('S.bo model still not solvable after lowering protein production by 100 percent!',false)
+         superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4066',0); 
+         superModel.SubModels{1} = setParam(superModel.SubModels{1},'lb','r_4067',0);
+         solSbo = solveLP(superModel.SubModels{1},1);
+         FBAsol{1} = solSbo.f;
+         %Check if no solution after stopping protein production
+         if isempty(solSbo.f)
+            dispEM('S.bo model still not solvable after stopping protein production!',false)
+         else
+            dispEM('S.bo model solvable after stopping protein production!',false)
+         end
+      else
+         dispEM('S.bo model solvable after lowering protein production by 100 percent!',false)
+      end
+   else
+      dispEM('S.bo model solvable after lowering protein production by 10 percent!',false)
    end
 end
 
+%Perform FBA for the rest of the models
 solBth = solveLP(superModel.SubModels{2},1);
 solEre = solveLP(superModel.SubModels{3},1);
 solMsi = solveLP(superModel.SubModels{4},1);
@@ -299,7 +322,7 @@ FBAsol{4} = solMsi.f;
 FBAsol{5} = solCan.f;
 FBAsol{6} = solCol.f;
 
-FBAsol %to show progress
+FBAsol %show progress
 
 %Need to set solution to 0 if unfeasible, sets as blank by default and
 %causes errors otherwise

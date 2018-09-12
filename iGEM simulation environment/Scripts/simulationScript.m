@@ -339,7 +339,7 @@ x(29):P28 (mmol/L)
 
 odeoptions = odeset('NonNegative',1:29);
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel,num),[0 150], initialConditions ,odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,num),[0 100], initialConditions ,odeoptions); 
 toc
 
 figure(1)

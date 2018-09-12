@@ -31,6 +31,7 @@ cd('C:\Users\zorrilla\Desktop\iGEM simulation environment')
 % Please ensure that each model being loaded has had some degree of
 % curation, and can be used for simulation (i.e. has objective function,
 % set bounds, etc). This will be done in the following sections.
+% To run these sections, go to the GEM folder
 
 %% 1.1 Saccharomyces boulardii model
 
@@ -229,6 +230,7 @@ printFluxes(modelColon,solColon.x);
 
 
 %% 2.0 Initialize Models
+% To run this section, go to the scripts folder
 
 %define cell strucutre of models to be initialized
 models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
@@ -240,61 +242,56 @@ models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
 out = superModelFluxes(superModel);
 
 %% 3.0 Define kinetic paramters, initial conditions & flow rates
+% The kinetic paramters, initial conditions, flow rates, and other
+% adjustable parameters are defined in the excel sheet 'parameters.xlsx'.
+% To adjust parameters, change the values in the excel sheet and then 
+% re-run this section to load the new values into matlab.
 
+% Load excel file with kinetic parameters, initial concentrations, and flow
+% rates
 [num, txt, raw] = xlsread('parameters.xlsx');
 
-
-sbo0 = num(75);
-bth0 = num(76);
-ere0 = num(77);
-msi0 = num(78);
-can0 = num(79);
-col0 = num(80);
-glu0 = num(81);
-wat0 = num(82);
-oxy0 = num(83);
-pho0 = num(84);
-amm0 = num(85);
-ace0 = num(86);
-Q0 = num(87);
-H0 = num(88);
-K0 = num(89);
-F0 = num(90);
-V0 = num(91);
-T0 = num(92);
-W0 = num(93);
-M0 = num(94);
-L0 = num(95);
-I0 = num(96);
-car0 = num(97);
-pro0 = num(98);
-but0 = num(99);
-met0 = num(100);
-mfa0 = num(101);
-myr0 = num(102);
-p280 = num(103);
-
-
-
-% Initial biomass concentrations
-%sbo0 = 5; bth0 = 15; ere0 = 15; msi0 = 5; can0 = 5; col0 = 15;
-
-% Initial susbtrate concentrations
-%glu0 = 1; wat0 = 1; oxy0 = 1; pho0 = 1; amm0 = 1; ace0 = 1;
-
-% Initial amino acid concentrations
-%Q0 = 1; H0 = 1; K0 = 1; F0 = 1; V0 = 1; T0 = 1; W0 = 1; M0 = 1; L0 = 1; I0 = 1;
-
-% Initial product concentrations
-%car0 = 0; pro0 = 0; but0 = 0; met0 = 0; mfa0 = 0; myr0 = 0; p280 = 0;
+% Define initial conditions
+sbo0 = num(77);
+bth0 = num(78);
+ere0 = num(79);
+msi0 = num(80);
+can0 = num(81);
+col0 = num(82);
+glu0 = num(83);
+wat0 = num(84);
+oxy0 = num(85);
+pho0 = num(86);
+amm0 = num(87);
+ace0 = num(88);
+Q0 = num(89);
+H0 = num(90);
+K0 = num(91);
+F0 = num(92);
+V0 = num(93);
+T0 = num(94);
+W0 = num(95);
+M0 = num(96);
+L0 = num(97);
+I0 = num(98);
+car0 = num(99);
+pro0 = num(100);
+but0 = num(101);
+met0 = num(102);
+mfa0 = num(103);
+myr0 = num(104);
+p280 = num(105);
 
 % Summary
 initialConditions = [sbo0 bth0 ere0 msi0 can0 col0 glu0 wat0 oxy0 pho0 amm0 ace0 Q0 H0 K0 F0 V0 T0 W0 M0 L0 I0 car0 pro0 but0 met0 mfa0 myr0 p280];
-%kineticParams = [vmax_g1 vmax_g2 vmax_g3 vmax_g5 vmax_g6 ks_g1 ks_g2 ks_g3 ks_g5 ks_g6 vmax_o1 vmax_o5 vmax_o6 ks_o1 ks_o5 ks_o6 vmax_p1 vmax_p2 vmax_p3 vmax_p4 vmax_p5 ks_p1 ks_p2 ks_p3 ks_p4 ks_p5 vmax_am1 vmax_am2 vmax_am3 vmax_am4 vmax_ac4 ks_ac4 ks_am1 ks_am2 ks_am3 ks_am4 vmax_Q5 ks_Q5 vmax_H5 vmax_H6 ks_H5 ks_H6 vmax_K5 vmax_K6 ks_K5 ks_K6 vmax_F5 vmax_F6 ks_F5 ks_F6 vmax_V5 vmax_V6 ks_V5 ks_V6 vmax_T5 vmax_T6 ks_T5 ks_T6 vmax_W5 vmax_W6 ks_W5 ks_W6 vmax_M5 vmax_M6 ks_M5 ks_M6 vmax_L5 vmax_L6 ks_L5 ks_L6 vmax_I5 vmax_I6 ks_I5 ks_I6];
 
 %% 4.0 Simulations
-%{
+% Run this section to perform community simulations. To remove any of the
+% models from the community, simply set the initial biomass and inflow of 
+% an organism to zero (e.g. ere0 = 0, eref = 0). Make sure to re-run
+% section 3.0 in order to update the adjusted parameters.
 
+%{
 curves look better when models have their respective compartments merged. 
 when I do it without merging then Bth outgrows the shit out of everything 
 else. also simulations take waaaaay longer if comps not merged, probably 
@@ -302,47 +299,47 @@ because doing so greatly simplifies the cancer and colon models. ode113
 seems to work the best for simulations, ode15s also works well sometimes.
 
 BIOMASS
-x(1):S.bo biomass
-x(2):B.th biomass
-x(3):E.re biomass
-x(4):M.si biomass
-x(5):Cancer biomass
-x(6):Colon biomass
+x(1):S.bo biomass (g/L)
+x(2):B.th biomass (g/L)
+x(3):E.re biomass (g/L)
+x(4):M.si biomass (g/L)
+x(5):Cancer biomass (g/L)
+x(6):Colon biomass (g/L)
 
 SUBSTRATES
-x(7):Glucose
-x(8):Water
-x(9):Oxygen
-x(10):Phosphate
-x(11):Ammonium
-x(12):Acetate
+x(7):Glucose (mmol/L)
+x(8):Water (mmol/L)
+x(9):Oxygen (mmol/L)
+x(10):Phosphate (mmol/L)
+x(11):Ammonium (mmol/L)
+x(12):Acetate (mmol/L)
 
 AMINO ACIDS
-x(13):Glutamine
-x(14):Histidine
-x(15):Lysine
-x(16):Phenylalanine
-x(17):Valine
-x(18):Threonine
-x(19):Tryptophan
-x(20):Methionine
-x(21):Leucine
-x(22):Isoleucine
+x(13):Glutamine (mmol/L)
+x(14):Histidine (mmol/L)
+x(15):Lysine (mmol/L)
+x(16):Phenylalanine (mmol/L)
+x(17):Valine (mmol/L)
+x(18):Threonine (mmol/L)
+x(19):Tryptophan (mmol/L)
+x(20):Methionine (mmol/L)
+x(21):Leucine (mmol/L)
+x(22):Isoleucine (mmol/L)
 
 PRODUCTS
-x(23):Carbon dioxide
-x(24):Propanoate
-x(25):Butyrate
-x(26):Methane
-x(27):MFalpha2
-x(28):Myrosinase
-x(29):P28
+x(23):Carbon dioxide (mmol/L)
+x(24):Propanoate (mmol/L)
+x(25):Butyrate (mmol/L)
+x(26):Methane (mmol/L)
+x(27):MFalpha2 (mmol/L)
+x(28):Myrosinase (mmol/L)
+x(29):P28 (mmol/L)
 
 %}
 
 odeoptions = odeset('NonNegative',1:29);
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel,num),[0 50], initialConditions ,odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,num),[0 100], initialConditions ,odeoptions); 
 toc
 
 figure(1)
