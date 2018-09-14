@@ -1,1 +1,3 @@
 # ![iGEM CHALMERS](logo.png)
+
+Welcome to our project repositorty. This is a supplement to our wiki page, which can be found at .....
