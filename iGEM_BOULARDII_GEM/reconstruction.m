@@ -87,7 +87,7 @@ modelSbo.rxns=regexprep(modelSbo.rxns,'_EXP_.','')
 
 clear sboBlastStructure modelSceExpanded
 
-%% 5. Saccharomyces boulardii GEM CURATION
+%% 5. Saccharomyces boulardii GEM CURATION & GAP-FILLING
 
 % Need to add transport, exchange, and any non-gene-annotated-reactions
 % necessary for growth
@@ -117,7 +117,7 @@ sol =
 %}
 
 % Check fluxes
-printFluxes(modelSbo,sol.x); %ERROR: GEM cannot grow, need to do gap filling
+printFluxes(modelSbo,sol.x);% GEM cannot grow, the model is solvable but cannot produce biomass
 
 % Force model to push flux through growth reaction by setting the lower 
 % bound to an arbitrary positive number
@@ -141,7 +141,7 @@ printFluxes(modelSbo,sol.x); % Growth achieved
 
 clear addedRxns cannotConnect exitFlag newConnected noGeneIdx rxnIdx rxns sol
 
-%% 6. ADD PROTEINS OF INTEREST (MFalpha2, Myrosinase, and P28) TO S.bo MODEL
+%% 6. ADD PROTEINS (MFalpha2, Myrosinase, and P28) TO S.bo MODEL
 
 clear rxnToAdd metsToAdd % Make sure these structures are empty
 
@@ -166,16 +166,17 @@ clear rxnToAdd metsToAdd % Make sure these structures are empty
 rxnToAdd.rxns={'r_4066','r_4067','r_4068','r_4069','r_4070','r_4071','r_4072','r_4073','r_4074'}; % These numbers were determined by finiding the highest rxn ID in the excel model
 rxnToAdd.rxnNames={'MFalpha2 formation','Myrosinase formation','P28 formation','MFalpha2 transport','Myrosinase transport','P28 transport','MFalpha2 exchange','Myrosinase exchange','P28 exchange'};
 rxnToAdd.equations={protStruct.eqn{1}, protStruct.eqn{2}, protStruct.eqn{3}, 'MFalpha2[c] <=> MFalpha2[e]', 'Myrosinase[c] <=> Myrosinase[e]', 'P28[c] <=> P28[e]', 'MFalpha2[e] <=> ', 'Myrosinase[e] <=> ', 'P28[e] <=> '};
-%rxnToAdd.eccodes= {'NA','NA','NA'};
-%rxnToAdd.grRules= {'NA','NA','NA'};
+%rxnToAdd.eccodes= {'N/A','N/A','N/A'};
+%rxnToAdd.grRules= {'N/A','N/A','N/A'};
 rxnToAdd.subSystems={{'Alpha Pheromone'},{'Myrosinase'},{'P28'}, {'Alpha Pheromone'},{'Myrosinase'},{'P28'},{'Alpha Pheromone'},{'Myrosinase'},{'P28'}}; %NOTE: each subsystem name has to be its own cell for exportToExcel() to work
-%rxnToAdd.rxnReferences = {'NA','NA','NA'};
-%rxnToAdd.confidenceScores = {'NA','NA','NA'};
+%rxnToAdd.rxnReferences = {'N/A','N/A','N/A'};
+%rxnToAdd.confidenceScores = {'N/A','N/A','N/A'};
 rxnToAdd.lb=[0,0,0,-1000,-1000,-1000,0,0,0];
 rxnToAdd.ub=[1000,1000,1000,1000,1000,1000,1000,1000,1000];
 modelSbo=addRxns(modelSbo,rxnToAdd,3,'',true);
 
-exportToExcelFormat(modelSbo,'modelSbo.xlsx');
+% Inspect model
+%exportToExcelFormat(modelSbo,'modelSbo.xlsx');
 
 clear rxnToAdd protStruct x
 
@@ -186,67 +187,36 @@ clear rxnToAdd protStruct x
 modelSbo=setParam(modelSbo,'obj','r_4041',1); %biomass production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
-%{
-EXCHANGE FLUXES:
-r_2111	(growth):	0.074486
-r_1654	(ammonium exchange):	-0.41022
-r_1672	(carbon dioxide exchange):	3.283
-r_1714	(D-glucose exchange):	-1
-r_1861	(iron(2+) exchange):	-7.4486e-08
-r_1992	(oxygen exchange):	-3.1396
-r_2005	(phosphate exchange):	-0.018879
-r_2060	(sulphate exchange):	-0.0056902
-%}
 
 modelSbo=setParam(modelSbo,'obj','r_4072',1); %MFalpha2 production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
-%{
-EXCHANGE FLUXES:
-r_1654	(ammonium exchange):	-0.76809
-r_1672	(carbon dioxide exchange):	2.9775
-r_1714	(D-glucose exchange):	-1
-r_1992	(oxygen exchange):	-2.8279
-r_2060	(sulphate exchange):	-0.014963
-r_4072	(MFalpha2 exchange):	0.0049876
-%}
+
 
 modelSbo=setParam(modelSbo,'obj','r_4073',1); %Myrosinase production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
-%{
-EXCHANGE FLUXES:
-r_1654	(ammonium exchange):	-0.7732
-r_1672	(carbon dioxide exchange):	2.9947
-r_1714	(D-glucose exchange):	-1
-r_1992	(oxygen exchange):	-2.8541
-r_2060	(sulphate exchange):	-0.022966
-r_4073	(Myrosinase exchange):	0.0010936
-%}
+
 
 modelSbo=setParam(modelSbo,'obj','r_4074',1); %P28 production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
-%{
-EXCHANGE FLUXES:
-r_1654	(ammonium exchange):	-0.76725
-r_1672	(carbon dioxide exchange):	2.9805
-r_1714	(D-glucose exchange):	-1
-r_1992	(oxygen exchange):	-2.8444
-r_2060	(sulphate exchange):	-0.0495
-r_4074	(P28 exchange):	0.02475
-%}
+
+% Proteins can be produced!
 
 %% 8. FINAL CLEAN UP OF Saccharomyces boulardii MODEL
 
-modelSbo = modelSbo; % for clarity rename final model as modelSbo
 modelSbo = deleteUnusedGenes(modelSbo); % delete genes that are not tied to any reaction
 modelSbo.id='Sbo';
-modelSbo.description='Genome-scale model of Saccharomyces boulardii';
+modelSbo.description='Genome-scale metabolic model of Saccharomyces boulardii derived from the Chalmers Sysbio Consensus Yeast GEM';
 modelSbo.annotation.familyName='Zorrilla';
 modelSbo.annotation.givenName='Francisco';
 modelSbo.annotation.email='zorrilla@chalmers.se';
 modelSbo.annotation.organization='Chalmers University of Technology';
-modelSbo.annotation.notes='This genome scale model reconstruction was performed for modeling of the Chalmers iGEM 2018 team, please cite.';
+modelSbo.annotation.notes='This genome scale model reconstruction was performed for modeling of the Chalmers iGEM 2018 team, please cite if model is used.';
 
 exportToExcelFormat(modelSbo,'modelSbo.xlsx');
+
+%Save model as a mat file
+save('modelSbo.mat','modelSbo')
+%This modelSbo.mat should be identical to the modelSbo.mat file in the folder ...\iGEM simulation environment\GEMs

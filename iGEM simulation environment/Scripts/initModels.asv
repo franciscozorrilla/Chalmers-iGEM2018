@@ -29,7 +29,7 @@ exchangeFluxes = {};
 bounds = {};
 
 if whichFluxes == 1
-    %populate cells for superModel structure RUN THIS TO GET ONLY EXCHANGE FLUXES
+    %populate cells for superModel structure
     for q = 1:length(models) 
         [exchangeRxns{q},exchangeRxnsIndexes{q}]=getExchangeRxns(models{q}); %get exchange reaction IDs and their indexes
         exchangeRxnsNames{1,q} = transpose({models{q}.rxnNames{exchangeRxnsIndexes{q}}}); % get exchange reaction names
@@ -63,14 +63,14 @@ if whichFluxes ==2
     end
     %populate superModel structure
     superModel = struct;
-    superModel.organismID = ids;
-    superModel.rxnName = rxnsNames;
-    superModel.rxnID = rxns;
-    superModel.rxnIndex = exchangeRxnsIndexes;
-    superModel.exchangeFluxes = exchangeFluxes;
-    superModel.bounds = bounds;
+    superModel.OrganismID = ids;
+    superModel.RxnName = rxnsNames;
+    superModel.RxnID = rxns;
+    superModel.RxnIndex = exchangeRxnsIndexes;
+    superModel.ExchangeFluxes = exchangeFluxes;
+    superModel.Bounds = bounds;
     superModel.FBAsol = FBAsol;
-    superModel.subModels = models;
+    superModel.SubModels = models;
 end
 
 end

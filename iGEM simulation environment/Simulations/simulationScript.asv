@@ -56,7 +56,8 @@ modelSbo=setParam(modelSbo,'lb','r_1902',-1000); %methionine
 modelSbo=setParam(modelSbo,'lb','r_1899',-1000); %leucine
 modelSbo=setParam(modelSbo,'lb','r_1897',-1000); %isoleucine
 
-modelSbo=setParam(modelSbo,'ub','r_2100',999); % make water secretion bound slightly lower than uptake, makes not practical difference but helps avoids warnings during simulations
+modelSbor_2100
+
 
 modelSbo=setParam(modelSbo,'eq',{'r_1904','r_1906','r_1913','r_1889','r_1879','r_1880','r_1881','r_1883'},0); %block non essential amino acid uptake
 modelSbo=setParam(modelSbo,'ub',{'r_1891','r_1893','r_1900','r_1903','r_1914','r_1911','r_1912','r_1902','r_1899','r_1897','r_1810','r_1714'},0); % make AA-exchange & glucose irreversible
@@ -72,7 +73,7 @@ modelSbo=mergeCompartments(modelSbo);%merge compartments to make simulations run
 modelSbo.metNames(223) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelSbo.metNames(532) = {'oxygen'}; % rename O2 as oxygen for consistency with other models
 modelSbo.metNames(354) = {'water'}; % rename H2O as water for consistency
-modelSbo.metNames(1028) = {'biomass S.bo'}; % rename biomass as biomass S.bo
+modelSbo.metNames(1023) = {'biomass S.bo'}; % rename biomass as biomass S.bo
 
 solSbo=solveLP(modelSbo,1);
 printFluxes(modelSbo,solSbo.x);
@@ -294,7 +295,7 @@ whichFluxes = 1; %To get only exchange fluxes
 %whichFluxes = 2; %To get all fluxes
 
 %Inspect superModel structure, refer to initModels() function file for details
-[superModel] = initModels(models,whichFluxes); % If errors are thrown it is likely due to models not being solvable. Make sure there is a feasible solution before initializing models
+[superModel] = initModels(models,whichFluxes); 
 
 %Contains summary of all exchange rxns
 fluxes = superModelFluxes(superModel,whichFluxes);
