@@ -18,6 +18,13 @@ msi0 = mets(4,1);
 can0 = mets(5,1);
 col0 = mets(6,1);
 
+sbof = mets(1,2);
+bthf = mets(2,2);
+eref = mets(3,2);
+msif = mets(4,2);
+canf = mets(5,2);
+colf = mets(6,2);
+
 D = params.other(1);
 ACE = params.other(2);
 myrMW = params.other(3);
