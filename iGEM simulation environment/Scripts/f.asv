@@ -78,12 +78,13 @@ for organism = 1:length(superModel.organismID) %do this for each organism
                 lbub(upMet,organism) = {'l'};
             elseif abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) < abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))
                 lbub(upMet,organism) = {'u'};
-            elseif abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) == abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))
+            elseif (abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) == abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))) & (abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) ~= 0)
                 dispEM(['Unable to determine whether lower or upper bound should be modified for organism' superModel.organismID{organism} ' ,reaction ' superModel.subModels{organism}.rxnNames{metIdx(upMet,organism)} '. Errors may arise if this occurs for reactions other than water.'],false)
             end
         end
     end
 end
+
 
 plusmin = [];
 for organism = 1:length(superModel.organismID)
@@ -276,11 +277,12 @@ for metNum = 1:length(metIdx)
     elseif metNum == 6
         dx(metNum)= 0;
     else
-        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNu,5))*x(5))*plusmin(upMet,5) + abs(solCol.x(metIdx(upMet,6))*x(6))*plusmin(upMet,6) - D*(x(metNum)- mets(metNum,2))
+        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - D*(x(metNum)- mets(metNum,2))
     end
 end
 
 %{
+
 %Biomass mass balances (g/L*hour)
 dx(1)= abs(x(1)*solSbo.f) - D*(x(1) - sbof);
 dx(2)= abs(x(2)*solBth.f) - D*x(2);
