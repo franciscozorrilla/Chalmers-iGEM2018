@@ -61,18 +61,18 @@ for organism = 1:length(superModel.organismID)
         if Vmax(upMet,organism)==0 & Ks(upMet,organism) ==0
             bound(upMet,organism)=0;
         else
-            bound(upMet,organism) = (Vmax(upMet,organism) .* x(upMet)) ./ (Ks(upMet,organism) + x(upMet));
+            bound(upMet,organism) = abs((Vmax(upMet,organism) * x(upMet)) / (Ks(upMet,organism) + x(upMet)));
         end
     end
 end
 
 lbub = {};
-%Define lower bound/upper bound structure, containing information about
+%Define lower bound/upper bound structure containing information about
 %which bound needs to update
 for organism = 1:length(superModel.organismID) %do this for each organism
     for upMet = 1:length(metIdx) % do this for each uptake metabolite
         if bound(upMet,organism) ==0 | metIdx(upMet,organism) == 0 % check if model is not uptaking this metabolite
-            %do nothing
+            lbub(upMet,organism) = {'0'};
         else
             if abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) > abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))
                 lbub(upMet,organism) = {'l'};
@@ -82,6 +82,17 @@ for organism = 1:length(superModel.organismID) %do this for each organism
                 dispEM(['Unable to determine whether lower or upper bound should be modified for organism' superModel.organismID{organism} ' ,reaction ' superModel.subModels{organism}.rxnNames{metIdx(upMet,organism)} '. Errors may arise if this occurs for reactions other than water.'],false)
             end
         end
+    end
+end
+
+plusmin = [];
+for organism = 1:length(superModel.organismID)
+    for upMet = 1:length(metIdx)
+        if str2num(lbub{upMet,organism}) == 0
+            plusmin(upMet,organism) = 1;
+        else
+            plusmin(upMet,organism) = -1;
+        end    
     end
 end
 
@@ -105,6 +116,9 @@ end
 if x(29)>= mfaThresh
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.0005); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.0001);
+else
+   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.001); 
+   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0);
 end
 
 %2.FBA
@@ -117,10 +131,16 @@ if sbo0 == 0 & sbof == 0
 else
     solSbo = solveLP(superModel.subModels{1},1);
     FBAsol{1} = solSbo.f;
+    solSbo.skip = 0;
+    %if isempty(solSbo.f)
+    %    solSbo.f = 0;
+    %    solSbo.x = 0.*ones(length(superModel.subModels{1}.rxns),1);
+    %end
+    %printFluxes(superModel.subModels{1},solSbo.x)
 end
 %Need to a checking step to see if protein synthesis load is too heavy
 %for S.bo once substrates become limiting
-if isempty(solSbo.f) & solSbo.skip ~= 1
+if isempty(solSbo.f) & solSbo.skip == 0
    dispEM('S.bo model not solvable likely due to MFalpha2/Myrosinase production constraints, try reducing protein synthesis load.',false)
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.00005); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.00001);
@@ -158,17 +178,20 @@ end
 if bth0 == 0 & bthf == 0
     solBth.f = 0;
     solBth.x = 0.*ones(length(superModel.subModels{2}.rxns),1);
-    solBth.skip = 1;
     FBAsol{2} = {};
 else
     solBth = solveLP(superModel.subModels{2},1);
     FBAsol{2} = solBth.f;
+    %if isempty(solBth.f)
+    %    solBth.f = 0;
+    %    solBth.x = 0.*ones(length(superModel.subModels{2}.rxns),1);
+    %end
+    %printFluxes(superModel.subModels{2},solBth.x)
 end
 
 if ere0 == 0 & eref == 0
     solEre.f = 0; 
     solEre.x = 0.*ones(length(superModel.subModels{3}.rxns),1);
-    solEre.skip = 1;
     FBAsol{3} = {};
 else
     solEre = solveLP(superModel.subModels{3},1);
@@ -178,7 +201,6 @@ end
 if msi0 == 0 & msif == 0
     solMsi.f = 0; 
     solMsi.x = 0.*ones(length(superModel.subModels{4}.rxns),1);
-    solMsi.skip = 1;
     FBAsol{4} = {};
 else
     solMsi = solveLP(superModel.subModels{4},1);
@@ -188,7 +210,6 @@ end
 if can0 == 0 & canf == 0
     solCan.f = 0; 
     solCan.x = 0.*ones(length(superModel.subModels{5}.rxns),1);
-    solCan.skip = 1;
     FBAsol{5} = {};
 else
     solCan = solveLP(superModel.subModels{5},1);
@@ -198,7 +219,6 @@ end
 if col0 == 0 & colf == 0
     solCol.f = 0;
     solCol.x = 0.*ones(length(superModel.subModels{6}.rxns),1) ;
-    solCol.skip = 1;
     FBAsol{6} = {};
 else
     solCol = solveLP(superModel.subModels{6},1);
@@ -250,6 +270,17 @@ end
 
 %3.DYNAMIC BLOCK
 
+for metNum = 1:length(metIdx) 
+    if metNum == 5
+        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(30);
+    elseif metNum == 6
+        dx(metNum)= 0;
+    else
+        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNu,5))*x(5))*plusmin(upMet,5) + abs(solCol.x(metIdx(upMet,6))*x(6))*plusmin(upMet,6) - D*(x(metNum)- mets(metNum,2))
+    end
+end
+
+%{
 %Biomass mass balances (g/L*hour)
 dx(1)= abs(x(1)*solSbo.f) - D*(x(1) - sbof);
 dx(2)= abs(x(2)*solBth.f) - D*x(2);
@@ -298,10 +329,10 @@ dx(17)= - abs(solSbo.x(1892)*x(1)) - abs(solCan.x(4008)*x(5)) - abs(solCol.x(312
 dx(18)= - abs(solSbo.x(1889)*x(1)) - abs(solCan.x(4006)*x(5)) - abs(solCol.x(3123)*x(6)) - D*(x(18) - Tf);
 
 %Tryptophan mass balance
-dx(19)= - abs(solSbo.x(1890)*x(1)) - abs(solCan.x(4007)*x(5)) - abs(solCol.x(3124)*x(6)) - D*(x(19) -  Wf);
+dx(19)= - abs(solSbo.x(1890)*x(1)) - abs(solBth.x(963)*x(2)) - abs(solEre.x(404)*x(3)) - abs(solCan.x(4007)*x(5)) - abs(solCol.x(3124)*x(6)) - D*(x(19) -  Wf);
 
 %Methionine mass balance
-dx(20)= - abs(solSbo.x(1884)*x(1)) - abs(solCan.x(4004)*x(5)) - abs(solCol.x(3121)*x(6)) - D*(x(20) - Mf);
+dx(20)= - abs(solSbo.x(1884)*x(1)) - abs(solBth.x(962)*x(2)) - abs(solEre.x(403)*x(3))  - abs(solCan.x(4004)*x(5)) - abs(solCol.x(3121)*x(6)) - D*(x(20) - Mf);
 
 %Leucine mass balance
 dx(21)= - abs(solSbo.x(1882)*x(1)) - abs(solCan.x(4002)*x(5)) - abs(solCol.x(3119)*x(6)) - D*(x(21) - Lf);
@@ -319,7 +350,7 @@ dx(24)= abs(solBth.x(954)*x(2)) - D*x(24);
 dx(25)= abs(solEre.x(111)*x(3)) - D*x(25);
 
 %Succinate mass balance
-dx(26)= abs(solSbo.x(1922)*x(1)) - D*x(28);
+dx(26)= abs(solSbo.x(1922)*x(1)) - D*x(26);
 
 %Ethanol mass balance
 dx(27)= abs(solSbo.x(1841)) - D*x(27);
@@ -335,6 +366,8 @@ dx(30)= abs(solSbo.x(1973)*x(1)) - D*x(30);
 
 %P28 mass balance
 dx(31) = abs(solSbo.x(1974)*x(1)) - D*x(31)
+
+%}
 
 dx = dx(:);
 

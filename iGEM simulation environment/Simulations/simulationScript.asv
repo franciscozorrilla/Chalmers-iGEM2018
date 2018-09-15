@@ -31,7 +31,13 @@ cd('C:\Users\zorrilla\Desktop\iGEM simulation environment')
 % Please ensure that each model being loaded has had some degree of
 % curation, and can be used for simulation (i.e. has objective function,
 % set bounds, etc). This will be done in the following sections.
-% To run these sections, go to the GEM folder
+% To run these sections, go to the GEM folder. Make sure that the exchange
+% reactions for each state variable, particularly uptake metabololites
+% (eg x(7)=glucose), has one of its bounds equal to zero. For example, the 
+% exchange reaction 'r_1714' 'D-glucose[s] <=> 'should have upper bound set
+% to zero, since it will never secrete glucose. This is how the dFBA loop
+% will determine which bound it needs to modify.
+
 
 %% 1.1 Saccharomyces boulardii model
 
@@ -56,11 +62,10 @@ modelSbo=setParam(modelSbo,'lb','r_1902',-1000); %methionine
 modelSbo=setParam(modelSbo,'lb','r_1899',-1000); %leucine
 modelSbo=setParam(modelSbo,'lb','r_1897',-1000); %isoleucine
 
-modelSbor_2100
-
+modelSbo=setParam(modelSbo,'ub','r_2100',999); % make water secretion bound slightly lower than uptake, makes not practical difference but helps avoids warnings during simulations
 
 modelSbo=setParam(modelSbo,'eq',{'r_1904','r_1906','r_1913','r_1889','r_1879','r_1880','r_1881','r_1883'},0); %block non essential amino acid uptake
-modelSbo=setParam(modelSbo,'ub',{'r_1891','r_1893','r_1900','r_1903','r_1914','r_1911','r_1912','r_1902','r_1899','r_1897','r_1810','r_1714'},0); % make AA-exchange & glucose irreversible
+modelSbo=setParam(modelSbo,'ub',{'r_1891','r_1893','r_1900','r_1903','r_1914','r_1911','r_1912','r_1902','r_1899','r_1897','r_1810'},0); % make AA-exchange & glucose irreversible
 
 modelSbo=setParam(modelSbo,'lb','r_4066',0.001); %set MFalpha2 production to a minimum of 0.009, this seems to be the maximum it can produce
 %however, once the model becomes constrained by competing with other
@@ -73,7 +78,7 @@ modelSbo=mergeCompartments(modelSbo);%merge compartments to make simulations run
 modelSbo.metNames(223) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelSbo.metNames(532) = {'oxygen'}; % rename O2 as oxygen for consistency with other models
 modelSbo.metNames(354) = {'water'}; % rename H2O as water for consistency
-modelSbo.metNames(1023) = {'biomass S.bo'}; % rename biomass as biomass S.bo
+modelSbo.metNames(1028) = {'biomass S.bo'}; % rename biomass as biomass S.bo
 
 solSbo=solveLP(modelSbo,1);
 printFluxes(modelSbo,solSbo.x);
@@ -88,12 +93,15 @@ modelBth.id = 'Bth';
 modelBth=setParam(modelBth,'obj','biomass_red',1);
 modelBth=setParam(modelBth,'lb','glcIn',0); % make glucose uptake irreversible
 modelBth=mergeCompartments(modelBth);
-solBth=solveLP(modelBth,1);
-printFluxes(modelBth,solBth.x);
+
+[modelBth, addedRxnsBth]=addExchangeRxns(modelBth,'in',{'m468','m714'});%add exch rxns for methionine and tryptophan
 
 modelBth.metNames(192) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelBth.metNames(321) = {'water'}; % rename H2O as water for consistency
 modelBth.metNames(613) = {'biomass B.th'}; % rename biomass as biomass B.th
+
+solBth=solveLP(modelBth,1);
+printFluxes(modelBth,solBth.x);
 
 %exportToExcelFormat(modelBth,'modelBth.xlsx');  
 
@@ -106,12 +114,16 @@ modelEre=setParam(modelEre,'lb','glcIn',0); % make glucose uptake irreversible
 modelEre=setParam(modelEre,'ub','r113',0); % make water uptake irreversible
 modelEre=setParam(modelEre,'lb','r114',0); % make phosphate uptake irreversible
 modelEre=mergeCompartments(modelEre);
-solEre=solveLP(modelEre,1);
-printFluxes(modelEre,solEre.x);
+
+[modelEre, addedRxnsBth]=addExchangeRxns(modelEre,'in',{'m218','m296'});%add exch rxns for methionine and tryptophan
 
 modelEre.metNames(110) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelEre.metNames(182) = {'water'}; % rename H2O as water for consistency
 modelEre.metNames(327) = {'biomass E.re'}; % rename biomass as biomass E.re
+
+solEre=solveLP(modelEre,1);
+printFluxes(modelEre,solEre.x);
+
 %exportToExcelFormat(modelEre,'modelEre.xlsx');
 
 %% 1.4 Methanobrevibacter smithii model
@@ -295,7 +307,7 @@ whichFluxes = 1; %To get only exchange fluxes
 %whichFluxes = 2; %To get all fluxes
 
 %Inspect superModel structure, refer to initModels() function file for details
-[superModel] = initModels(models,whichFluxes); 
+[superModel] = initModels(models,whichFluxes); % If errors are thrown it is likely due to models not being solvable. Make sure there is a feasible solution before initializing models
 
 %Contains summary of all exchange rxns
 fluxes = superModelFluxes(superModel,whichFluxes);
@@ -346,7 +358,13 @@ for organism = 1:length(superModel.organismID)
     end
 end
 
-
+for organism = 1:length(superModel.organismID)
+    for rxn = 1:length(superModel.subModels{organism}.rxns)
+        if superModel.subModels{organism}.lb(rxn) == 0 & superModel.subModels{organism}.ub(rxn) == 0;
+            block{}
+        end
+    end
+end
 
 %% 3.0 Define kinetic paramters, initial conditions & flow rates
 % The kinetic paramters, initial conditions, flow rates, and other
@@ -365,7 +383,7 @@ params.other = xlsread('paramTables.xlsx',4);
 params.metIdx = metIdx;
 
 % Initial conditions definition
-initialConditions = transpose(mets(:,1));
+initialConditions = transpose(params.mets(:,1));
 
 %% 4.0 Simulations
 % Run this section to perform community simulations. To remove any of the
@@ -421,7 +439,7 @@ x(31):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('NonNegative',1:31);
+odeoptions = odeset('NonNegative',1:31,'InitialStep',1e-3);
 tic
 [t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 240], initialConditions ,odeoptions); 
 toc
