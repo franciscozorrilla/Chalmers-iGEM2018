@@ -252,11 +252,11 @@ for metNum = 1:length(metIdx)
     elseif metNum == 6
         dx(metNum)= 0;
     else
-        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - D*(x(metNum)- mets(metNum,2))
+        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - D*(x(metNum)- mets(metNum,2));
     end
 end
 
-dx(31) = 0;
+dx(31) = 0
 
 dx = dx(:);
 

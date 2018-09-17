@@ -1,8 +1,17 @@
 function fluxes = superModelFluxes(superModel,whichFluxes)
 %SuperModelFluxes 
-%   superModel          Output from initModels() function
-%   whichFluxes         Use 1 to print exchange fluxes
-%                       Use 2 to print all fluxes
+%   superModel
+%      Sub Model ID       ID of organism
+%      Rection Name       Vector containing exchange reaction names
+%      Reaction ID        Vector containing exchange reaction IDs          
+%      Reaction Index     Vector containing exchange reaction indexes
+%      Exchange Fluxes    Vector containing exchange flux vlaues  
+%      Bounds             Vector containing lower and upper bounds
+%      FBA Solution       Structure containing FBA solution of model
+%      Sub Models         GEMs initialized by initModels()
+%   
+%   whichFluxes           Use 1 to print exchange fluxes
+%                         Use 2 to print all fluxes
 %
 %   Usage: fluxes = superModelFluxes(superModel,whichFluxes)
 %
