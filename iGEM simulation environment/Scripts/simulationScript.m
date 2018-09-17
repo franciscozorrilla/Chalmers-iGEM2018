@@ -206,8 +206,8 @@ modelCancer=setParam(modelCancer,'obj','HumanGrowth',1);
 canRxns= getExchangeRxns(modelCancer,'in'); %get exchange rxns going in
 modelCancer = setParam(modelCancer, 'eq', canRxns, 0); %constrain all exchange rxns going in 
 
-modelCancer = setParam(modelCancer,'lb',{'HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},-1); %allow for uptake/secretion of some mets
-modelCancer = setParam(modelCancer,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HMR_9078','HMR_9079','HumanGrowth','humanGrowthOut'},1); % allow for excretion/consumption of some mets
+modelCancer = setParam(modelCancer,'lb',{'HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077'},-1); %allow for uptake/secretion of some mets
+modelCancer = setParam(modelCancer,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9075','HMR_9076','HMR_9077','HumanGrowth','humanGrowthOut'},1); % allow for excretion/consumption of some mets
 modelCancer = setParam(modelCancer,'lb',{'HumanGrowth','humanGrowthOut','HMR_9047','HMR_9048','HMR_9058','HMR_9034','HMR_9072'},0);%constrain growth related rxns
 modelCancer = setParam(modelCancer,'ub',{'HMR_9073','HMR_9078','HMR_9079'},0);
 
@@ -247,8 +247,8 @@ modelColon.id = 'Col';
 modelColon = removeReactions(modelColon,{'HMR_1696','HMR_1849','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_1919','HMR_7568','HMR_7569','HMR_2585'}); %these intercompartment transport rxns may become problematic after merging compartments
 colRxns= getExchangeRxns(modelColon,'in'); % get exchange fluxes going in
 modelColon = setParam(modelColon, 'eq', colRxns, 0); %constrain fluxes going in
-modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},-1);
-modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078','HMR_9079'},1);
+modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078'},-1);
+modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078'},1);
 modelColon = mergeCompartments(modelColon);
 modelColon.genes = {''}; %insert dummy field to avoid errors with addRxns()
 
@@ -306,6 +306,8 @@ modelColon.metNames(2040) = {'ammonium'}; % rename NH3 as ammonium for consisten
 modelColon.metNames(2157) = {'phosphate'}; % rename Pi as phosphate for consistency with other models
 
 %exportToExcelFormat(modelColon,'modelColon.xlsx');
+
+clear addedRxnsBth addedRxnsEre addedRxnsMsi ans canRxns colRxns metsToAdd msiRxns q rxnToAdd
 
 %% 2.0 Initialize Models
 % To run this section, go to the scripts folder
@@ -449,17 +451,18 @@ x(23):Acetate (mmol/L)
 x(24):Propanoate (mmol/L)
 x(25):Butyrate (mmol/L)
 x(26):Succinate (mmol/L)
-x(27):Ethanol (mmol/L)
-x(28):Methane (mmol/L)
-x(29):MFalpha2 (mmol/L)
-x(30):Myrosinase (mmol/L)
-x(31):P28 (mmol/L)
+x(27):Formate (mmol/L)
+x(28):Ethanol (mmol/L)
+x(29):Methane (mmol/L)
+x(30):MFalpha2 (mmol/L)
+x(31):Myrosinase (mmol/L)
+x(32):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('NonNegative',1:31,'InitialStep',1e-3);
+odeoptions = odeset('NonNegative',1:32);
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 240], initialConditions ,odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 10], initialConditions ,odeoptions); 
 toc
 
 figure(1)
@@ -470,18 +473,18 @@ legend('S.bo Biomass','B.th Biomass','E.re Biomass','M.si Biomass', 'Cancer Biom
 
 figure(2)
 title('Substrates')
-plot(t,xa(:,7:12))
+plot(t,xa(:,7:11))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('Glucose','Water','Oxygen','Phosphate','Ammonium','Acetate')
+legend('Glucose','Water','Oxygen','Phosphate','Ammonium')
 
 figure(3)
 title('Amino acids')
-plot(t,xa(:,13:22))
+plot(t,xa(:,12:21))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Glutamine','Histidine','Lysine','Phenylalanine','Valine','Threonine','Tryptophan','Methionine','Leucine','Isoleucine')
 
 figure(4)
 title('Products')
-plot(t,xa(:,23:31))
+plot(t,xa(:,22:32))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('Carbon dioxide','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')
+legend('Carbon dioxide','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')

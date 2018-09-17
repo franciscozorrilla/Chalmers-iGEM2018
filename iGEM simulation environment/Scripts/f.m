@@ -41,6 +41,7 @@ for organism = 1:length(superModel.organismID)
         end
     end
 end
+bound
 
 lbub = {};
 %Define lower bound/upper bound structure containing information about
@@ -48,7 +49,7 @@ lbub = {};
 for organism = 1:length(superModel.organismID) %do this for each organism
     for upMet = 1:length(metIdx) % do this for each uptake metabolite
         if bound(upMet,organism) ==0 | metIdx(upMet,organism) == blocked(1,organism) % check if model is not uptaking this metabolite
-            lbub(upMet,organism) = {'0'};
+            lbub(upMet,organism) = {'none'};
         else
             if abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) > abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))
                 lbub(upMet,organism) = {'l'};
@@ -75,7 +76,7 @@ end
 %Update bounds based previously defined objects 'bound' and 'lbub'
 for organism = 1:length(superModel.organismID)
     for upMet = 1:length(Vmax)
-        if bound(upMet,organism)==0
+        if bound(upMet,organism)=='none'
             %no uptake of this metabolite
         else
             if lbub{upMet,organism} == 'l'
@@ -248,7 +249,7 @@ end
 
 for metNum = 1:length(metIdx) 
     if metNum == 5
-        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(30);
+        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(31);
     elseif metNum == 6
         dx(metNum)= 0;
     else
@@ -256,7 +257,9 @@ for metNum = 1:length(metIdx)
     end
 end
 
-dx(31) = 0
+%This is just because the last metabolite,p28, is not used in these
+%simulations. For future usage this last line can be removed.
+dx(length(metIdx) ) = 0 
 
 dx = dx(:);
 
