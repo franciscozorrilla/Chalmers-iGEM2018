@@ -32,7 +32,7 @@ function [metEquations, metIdx, bounds, blocked] = checkFluxes(superModel,metNam
 %  
 %   Usage: [metEquations, metIdx, blocked] = checkFluxes(superModel,metNames)
 %
-%   Francisco Zorrilla, 12-17-2018
+%   Francisco Zorrilla, 12-09-2018
 
 
 metIdx = [];

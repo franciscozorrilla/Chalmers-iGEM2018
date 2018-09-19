@@ -25,7 +25,7 @@
 
 %}
 
-cd('C:\Users\zorrilla\Desktop\iGEM simulation environment')
+cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\GEMs')
 
 %% 1.0 Load & Check Genome Scale Models
 % Please ensure that each model being loaded has had some degree of
@@ -56,8 +56,6 @@ modelSbo=setParam(modelSbo,'lb','r_1902',-1000); %methionine
 modelSbo=setParam(modelSbo,'lb','r_1899',-1000); %leucine
 modelSbo=setParam(modelSbo,'lb','r_1897',-1000); %isoleucine
 
-modelSbo=setParam(modelSbo,'ub','r_2100',999); % make water secretion bound slightly lower than uptake, makes not practical difference but helps avoids warnings during simulations
-
 modelSbo=setParam(modelSbo,'eq',{'r_1904','r_1906','r_1913','r_1889','r_1879','r_1880','r_1881','r_1883'},0); %block non essential amino acid uptake
 modelSbo=setParam(modelSbo,'ub',{'r_1891','r_1893','r_1900','r_1903','r_1914','r_1911','r_1912','r_1902','r_1899','r_1897','r_1810'},0); % make AA-exchange & glucose irreversible
 
@@ -74,14 +72,15 @@ modelSbo.metNames(532) = {'oxygen'}; % rename O2 as oxygen for consistency with 
 modelSbo.metNames(354) = {'water'}; % rename H2O as water for consistency
 modelSbo.metNames(1028) = {'biomass S.bo'}; % rename biomass as biomass S.bo
 
-solSbo=solveLP(modelSbo,1);
-printFluxes(modelSbo,solSbo.x);
-
 modelSbo=setParam(modelSbo,'ub','r_1654',0); % make ammonium uptake irreversible
 modelSbo=setParam(modelSbo,'ub','r_1714',0); % make glucose uptake irreversible
 modelSbo=setParam(modelSbo,'ub','r_1992',0); % make oxygen uptake irreversible
 modelSbo=setParam(modelSbo,'ub','r_2005',0); % make phosphate uptake irreversible
 modelSbo=setParam(modelSbo,'ub','r_2060',0); % make sulphate uptake irreversible
+modelSbo=setParam(modelSbo,'ub','r_2100',0); % make water uptake irreveersible
+
+solSbo=solveLP(modelSbo,1);
+printFluxes(modelSbo,solSbo.x);
 
 %Export model to excel format for inspection
 %exportToExcelFormat(modelSbo,'modelSbo.xlsx');
@@ -160,29 +159,29 @@ rxnToAdd.lb=[0];
 rxnToAdd.ub=[1000];
 modelMsi=addRxns(modelMsi,rxnToAdd,3,'',true);
 % Note: M smithii produces methane gas, but the methane synthesis pathway
-% seems to be disconnected from the biomass pathway. A fast way to fix this
-% was to add methane as a product of biomass formation. An arbitrary
-% stoiochiometric coefficient of 0.5 was used.
+% seems to be disconnected from the biomass pathway.
 
 modelMsi = setParam(modelMsi,'lb','r225',0); % Need to constrain this reaction to be irreversible so that methane is excreted
 msiRxns= getExchangeRxns(modelMsi,'in'); % get exchange fluxes going in
 modelMsi = setParam(modelMsi, 'eq', msiRxns, 0); %constrain fluxes going in
 
-modelMsi = setParam(modelMsi,'ub',{'actIn','NH4IN','piIN','H2Suptake','H2In','CO2In'},1);
-modelMsi = setParam(modelMsi,'lb',{'H2ObTran'},-1);
-modelMsi = setParam(modelMsi,'ub',{'H2ObTran'},0);
-modelMsi = setParam(modelMsi,'lb',{'MethOut','actIn','H2In','CO2In'},0);
+modelMsi = setParam(modelMsi,'ub',{'actIn','NH4IN','piIN','CO2In'},1);
+modelMsi = setParam(modelMsi,'ub',{'H2Suptake','H2In','H2ObTran'},1000);
+modelMsi = setParam(modelMsi,'lb',{'H2ObTran'},-1001);
+modelMsi = setParam(modelMsi,'lb',{'MethOut','bmOut_msi'},0);
 
 modelMsi = setParam(modelMsi,'obj','biomassMsi',1);
-solMsi=solveLP(modelMsi,1);
-printFluxes(modelMsi,solMsi.x); %now model can grow and produce methane
+[modelMsi, addedRxnsMsi]=addExchangeRxns(modelMsi,'in',{'m305','m339','m370','m417','m512','m470','m496','m380','m367','m354','m582'}); %add AA & formate exchange
 
-[modelMsi, addedRxnsMsi]=addExchangeRxns(modelMsi,'in',{'m305','m339','m370','m417','m512','m470','m496','m380','m367','m354','m582'}); %add AA exchange, formate exchange
+
 
 
 modelMsi.metNames(184) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelMsi.metNames(301) = {'water'}; % rename H2O as water for consistency
 modelMsi.metNames(476) = {'biomass M.si'}; % rename biomass as biomass M.si
+
+solMsi=solveLP(modelMsi,1);
+printFluxes(modelMsi,solMsi.x); %now model can grow and produce methane at rate of 0.6813 mmol/gDCW*hr
 
 %exportToExcelFormat(modelMsi,'modelMsi.xlsx');
 
@@ -228,8 +227,6 @@ modelCancer=setParam(modelCancer,'ub','HMR_9086',1000); %acetate uptake
 
 modelCancer = removeReactions(modelCancer,{'HMR_1592','HMR_1696','HMR_4271','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_0016','HMR_0017','HMR_1919','HMR_7568','HMR_7569','HMR_2141','HMR_4184','HMR_2585','HMR_9391','HMR_9372'});%these intercompartment transport rxns may become problematic after merging compartments
 modelCancer = mergeCompartments(modelCancer);
-solCancer=solveLP(modelCancer,1);
-printFluxes(modelCancer,solCancer.x);
 
 modelCancer.metNames(1594) = {'carbon dioxide'}; % rename CO2 carbon dioxide for consistency with other models
 modelCancer.metNames(2021) = {'water'}; % rename H2O as water for consistency
@@ -237,6 +234,9 @@ modelCancer.metNames(2607) = {'oxygen'}; % rename O2 as oxygen for consistency w
 modelCancer.metNames(2555) = {'ammonium'}; % rename NH3 as ammonium for consistency with other models
 modelCancer.metNames(2728) = {'phosphate'}; % rename Pi as phosphate for consistency with other models
 modelCancer.metNames(3137) = {'biomass Can'}; % rename biomass as biomass Can
+
+solCancer=solveLP(modelCancer,1);
+printFluxes(modelCancer,solCancer.x);
 
 %exportToExcelFormat(modelCancer,'modelCancer.xlsx');
 
@@ -247,8 +247,8 @@ modelColon.id = 'Col';
 modelColon = removeReactions(modelColon,{'HMR_1696','HMR_1849','HMR_0006','HMR_0007','HMR_0008','HMR_0015','HMR_1919','HMR_7568','HMR_7569','HMR_2585'}); %these intercompartment transport rxns may become problematic after merging compartments
 colRxns= getExchangeRxns(modelColon,'in'); % get exchange fluxes going in
 modelColon = setParam(modelColon, 'eq', colRxns, 0); %constrain fluxes going in
-modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078'},-1);
-modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9047','HMR_9058','HMR_9072','HMR_9073','HMR_9074','HMR_9076','HMR_9077','HMR_9078'},1);
+modelColon = setParam(modelColon,'lb',{'HMR_9047'},-1000);
+modelColon = setParam(modelColon,'ub',{'HMR_9034','HMR_9048','HMR_9072','HMR_9073'},1);
 modelColon = mergeCompartments(modelColon);
 modelColon.genes = {''}; %insert dummy field to avoid errors with addRxns()
 
@@ -267,12 +267,10 @@ rxnToAdd.equations={'0.0937 alanine[s] + 0.0507 arginine[s] + 0.04 asparagine[s]
 rxnToAdd.lb=[-1000,0];
 rxnToAdd.ub=[1000,1000];
 modelColon=addRxns(modelColon,rxnToAdd,3,'',true);
+modelColon=setParam(modelColon,'ub','HMR_9047',0); %make sure water uptake is irreversible
 
 modelColon = setParam(modelColon,'obj','human_Maintenance',1);
 modelColon = rmfield(modelColon,'rxnComps');% only need to do after merging compartments for exportToExcel() to work
-
-modelColon = setParam(modelColon,'ub',{'HMR_9047','HMR_9075'},0);%constrain exch rxns to be irreversible
-modelColon = setParam(modelColon,'lb',{'HMR_9034','HMR_9048','HMR_9058','HMR_9073','HMR_9078','HMR_9079','HMR_9075'},0);
 
 modelColon=setParam(modelColon,'ub','HMR_9063',1000); %glutamine
 modelColon=setParam(modelColon,'ub','HMR_9038',1000); %histidine
@@ -285,7 +283,7 @@ modelColon=setParam(modelColon,'ub','HMR_9042',1000); %methionine
 modelColon=setParam(modelColon,'ub','HMR_9040',1000); %leucine
 modelColon=setParam(modelColon,'ub','HMR_9039',1000); %isoleucine
 
-modelColon=setParam(modelColon,'ub','HMR_9062',1000); %aspargine
+modelColon=setParam(modelColon,'ub','HMR_9062',1000); %aspargine NON ESSENTIAL, THESE AAs ARE NOT IN MASS BALANCES BUT ARE REQUIRED FOR COLON MAINTENANCE. SHOULD NOT AFFECT dFBA
 modelColon=setParam(modelColon,'ub','HMR_9066',1000); %arginine
 modelColon=setParam(modelColon,'ub','HMR_9067',1000); %glycine
 modelColon=setParam(modelColon,'ub','HMR_9064',1000); %tyrosine
@@ -295,22 +293,25 @@ modelColon=setParam(modelColon,'ub','HMR_9808',1000); %propanoate uptake
 modelColon=setParam(modelColon,'ub','HMR_9809',1000); %butyrate uptake
 modelColon=setParam(modelColon,'ub','HMR_9086',1000); %acetate uptake
 
-
-solColon = solveLP(modelColon,1);
-printFluxes(modelColon,solColon.x);
-
 modelColon.metNames(1281) = {'carbon dioxide'}; %rename CO2 as carbon dioxide for consistency with other models
 modelColon.metNames(1614) = {'water'}; % rename H2O as water for consistency
 modelColon.metNames(2075) = {'oxygen'}; % rename O2 as oxygen for consistency with other models
 modelColon.metNames(2040) = {'ammonium'}; % rename NH3 as ammonium for consistency with other models
 modelColon.metNames(2157) = {'phosphate'}; % rename Pi as phosphate for consistency with other models
 
+solColon = solveLP(modelColon,1);
+printFluxes(modelColon,solColon.x);
+
 %exportToExcelFormat(modelColon,'modelColon.xlsx');
+
+%%
 
 clear addedRxnsBth addedRxnsEre addedRxnsMsi ans canRxns colRxns metsToAdd msiRxns q rxnToAdd
 
 %% 2.0 Initialize Models
 % To run this section, go to the scripts folder
+
+cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\Scripts')
 
 %Define cell strucutre of models to be initialized
 models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
@@ -405,6 +406,9 @@ params.blocked = blocked;
 % Initial conditions definition
 initialConditions = transpose(params.mets(:,1));
 
+% Run one test FBA using initial conditions and kinetic parameters 
+[superModelTest,fluxesTest,bound,lbub] = updateFluxes(superModel,params);
+
 %% 4.0 Simulations
 % Run this section to perform community simulations. To remove any of the
 % models from the community, simply set the initial biomass and inflow of 
@@ -460,9 +464,9 @@ x(32):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('NonNegative',1:32);
+odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'MaxStep',0.7,'NonNegative',1:length(metNames));
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 10], initialConditions ,odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 240], initialConditions ,odeoptions); 
 toc
 
 figure(1)
