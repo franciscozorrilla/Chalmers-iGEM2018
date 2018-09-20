@@ -279,4 +279,9 @@ dx = dx(:);
 %Show current time
 t
 
+%It is very helpful to print out exchnage fluxes for an organism when
+%debuggning/troubleshooting. To do this for S.bo for example, simply add:
+
+%printFluxes(superModel.subModel{1},solSbo.x)
+
 end

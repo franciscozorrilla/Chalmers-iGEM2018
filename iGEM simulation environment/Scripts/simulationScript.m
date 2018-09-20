@@ -464,7 +464,7 @@ x(32):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'MaxStep',0.7,'NonNegative',1:length(metNames));
+odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames),'Stats','on');
 tic
 [t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 240], initialConditions ,odeoptions); 
 toc
@@ -492,3 +492,13 @@ title('Products')
 plot(t,xa(:,22:32))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Carbon dioxide','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')
+
+figure(5)
+subplot(2,1,1)
+plot(t,xa(:,[1 5]))
+legend('S.bo Biomass','Cancer Biomass')
+xlabel('Time (hours)'), ylabel('Concentration (g/L)')
+subplot(2,1,2)
+plot(t,xa(:,[30 31]))
+legend('MFalpha2','Myrosinase')
+xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')

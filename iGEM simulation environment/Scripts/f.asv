@@ -8,7 +8,6 @@ mets = params.mets;
 metIdx = params.metIdx;
 blocked = params.blocked;
 
-
 %Define parameters based on params structure in order to make mass balances
 %and other expressions legible/understandable 
 sbo0 = mets(1,1);
@@ -66,7 +65,7 @@ for organism = 1:length(superModel.organismID) %do this for each organism
                 lbub(upMet,organism) = {'u'};
             elseif (abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) == abs(superModel.subModels{organism}.ub(metIdx(upMet,organism)))) & (abs(superModel.subModels{organism}.lb(metIdx(upMet,organism))) ~= 0)
                 dispEM(['Unable to determine whether lower or upper bound should be modified for organism' superModel.organismID{organism} ' ,reaction involving metabolite number ' upMet '. Errors may arise if this occurs for reactions other than water.'],false)
-            elsei
+            else
                 lbub(upMet,organism) = {'x'};
             end
         end
@@ -274,23 +273,12 @@ end
 %simulations. For future usage this last line can be removed.
 dx(length(metIdx) ) = 0 
 
+%Do this to avoid errors with function
 dx = dx(:);
 
-%PRINT OUT FLUXES FOR MSI
-eqns = constructEquations(superModel.subModels{4},superModel.rxnID{4},true);
-lb = superModel.subModels{4}.lb(superModel.rxnIndex{4});
-ub = superModel.subModels{4}.ub(superModel.rxnIndex{4});
-idx = superModel.rxnIndex{4};
-exch = [ num2cell(idx) superModel.rxnName{4} num2cell(superModel.exchangeFluxes{4}) superModel.rxnID{4} eqns num2cell(lb) num2cell(ub)];
-fluxes = exch(find(superModel.exchangeFluxes{4}),:)
-
-eqns = {};
-lb = {};
-ub = {};
-idx = {};
-exch = {};
-fluxes = {};
-
+%Show current time
 t
+
+%It is very helpful to print out ex
 
 end
