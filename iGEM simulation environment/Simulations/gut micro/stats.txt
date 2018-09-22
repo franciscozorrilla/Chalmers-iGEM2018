@@ -1,0 +1,9 @@
+
+
+372 successful steps
+208 failed attempts
+3730 function evaluations
+82 partial derivatives
+295 LU decompositions
+1008 solutions of linear systems
+Elapsed time is 1298.612380 seconds.

@@ -27,6 +27,11 @@
 
 cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\GEMs')
 
+%To save time loading the models simply load a saved workspace in the
+%/Scripts folder
+cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\Scripts')
+load('cleanWorkspace.mat')
+
 %% 1.0 Load & Check Genome Scale Models
 % Please ensure that each model being loaded has had some degree of
 % curation, and can be used for simulation (i.e. has objective function,
@@ -464,9 +469,10 @@ x(32):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames),'Stats','on');
+odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames),'Stats','on','InitialStep',1e-3);
+
 tic
-[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 240], initialConditions ,odeoptions); 
+[t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 500], initialConditions ,odeoptions); 
 toc
 
 figure(1)
@@ -493,6 +499,7 @@ plot(t,xa(:,22:32))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Carbon dioxide','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')
 
+%Plot for simulation with only Sbo and Cancer
 figure(5)
 subplot(2,1,1)
 plot(t,xa(:,[1 5]))

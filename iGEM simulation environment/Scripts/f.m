@@ -122,31 +122,33 @@ if isempty(solSbo.f) & solSbo.skip == 0
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.00001);
    solSbo = solveLP(superModel.subModels{1},1);
    FBAsol{1} = solSbo.f;
-   %Check if no solution after decreasing protein production by 10%
+   %Check if no solution after decreasing protein production by one order
+   %of magnitude
    if isempty(solSbo.f)
-      dispEM('S.bo model still not solvable after lowering protein production by 10 percent!',false)
+      dispEM('S.bo model still not solvable after lowering protein production by one order of magnitude!',false)
       superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.000005); 
       superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.000001);
       solSbo = solveLP(superModel.subModels{1},1);
       FBAsol{1} = solSbo.f;
-      %Check if no solution after decreasing protein production by 100%
+      %Check if no solution after decreasing protein production by two
+      %orders of magnitude
       if isempty(solSbo.f)
-         dispEM('S.bo model still not solvable after lowering protein production by 100 percent!',false)
+         dispEM('S.bo model still not solvable after lowering protein production by two orders of magnitude!',false)
          superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0); 
          superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0);
          solSbo = solveLP(superModel.subModels{1},1);
          FBAsol{1} = solSbo.f;
          %Check if no solution after stopping protein production
          if isempty(solSbo.f)
-            dispEM('S.bo model still not solvable after stopping protein production!',false)
+            dispEM('S.bo model still not solvable after stopping protein production.',false)
          else
-            dispEM('S.bo model solvable after stopping protein production!',false)
+            dispEM('S.bo model solvable after stopping protein production. Further simulation may be more computationally expensive if this message persists.',false)
          end
       else
-         dispEM('S.bo model solvable after lowering protein production by 100 percent!',false)
+         dispEM('S.bo model solvable after lowering protein production by 100 percent.',false)
       end
    else
-      dispEM('S.bo model solvable after lowering protein production by 10 percent!',false)
+      dispEM('S.bo model solvable after lowering protein production by 10 percent.',false)
    end
 end
 
@@ -246,7 +248,8 @@ end
 
 %3.DYNAMIC BLOCK
 
-%Need to determine if flux should be adding or subtracting to each MB
+%Need to determine if flux should be adding or subtracting to each Mass
+%Balance
 plusmin = [];
 for organism = 1:length(superModel.organismID)
     for upMet = 1:length(metIdx)
@@ -259,11 +262,13 @@ for organism = 1:length(superModel.organismID)
 end
 
 %Run loop to generate mass balances
+%NOTE: This loop should be modified if more models are to be included in
+%simulation.
 for metNum = 1:length(metIdx) 
     if metNum == 5
-        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(31);
+        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(31);%Cancer biomass mass balance
     elseif metNum == 6
-        dx(metNum)= 0;
+        dx(metNum)= 0;%Colon biomass mass balance
     else
         dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - D*(x(metNum)- mets(metNum,2));
     end
@@ -282,6 +287,9 @@ t
 %It is very helpful to print out exchnage fluxes for an organism when
 %debuggning/troubleshooting. To do this for S.bo for example, simply add:
 
-%printFluxes(superModel.subModel{1},solSbo.x)
+%printFluxes(superModel.subModels{1},solSbo.x)
+
+%printFluxes(superModel.subModels{3},solEre.x)
+
 
 end
