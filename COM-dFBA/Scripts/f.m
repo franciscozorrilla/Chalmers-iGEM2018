@@ -87,10 +87,9 @@ for organism = 1:length(superModel.organismID)
     end
 end
 
-%Rule to make S.bo start Myrosinase production and adjust MFalpha2
-%production to account for limited protein pool
+%Rule to make S.bo start Myrosinase production
 if x(30)>= mfaThresh
-   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.0005); 
+   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.001); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.0001);
 elseif x(30)< mfaThresh
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.001); 
@@ -118,7 +117,7 @@ end
 %for S.bo once substrates become limiting
 if isempty(solSbo.f) & solSbo.skip == 0
    dispEM('S.bo model not solvable likely due to MFalpha2/Myrosinase production constraints, try reducing protein synthesis load.',false)
-   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.00005); 
+   superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.0001); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.00001);
    solSbo = solveLP(superModel.subModels{1},1);
    FBAsol{1} = solSbo.f;
@@ -126,7 +125,7 @@ if isempty(solSbo.f) & solSbo.skip == 0
    %of magnitude
    if isempty(solSbo.f)
       dispEM('S.bo model still not solvable after lowering protein production by one order of magnitude!',false)
-      superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.000005); 
+      superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.00001); 
       superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.000001);
       solSbo = solveLP(superModel.subModels{1},1);
       FBAsol{1} = solSbo.f;
@@ -288,8 +287,8 @@ t
 %debuggning/troubleshooting. To do this for S.bo for example, simply add:
 
 %printFluxes(superModel.subModels{1},solSbo.x)
-
 %printFluxes(superModel.subModels{3},solEre.x)
+printFluxes(superModel.subModels{5},solCan.x)
 
 
 end

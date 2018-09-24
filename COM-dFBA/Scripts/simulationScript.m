@@ -25,9 +25,12 @@
 
 %}
 
-cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\GEMs')
+cd('C:\Users\zorrilla\Desktop\COM-dFBA\GEMs')
 
-%To save time loading the models
+%To save time loading the models simply load a saved workspace in the
+%/Scripts folder
+cd('C:\Users\zorrilla\Desktop\COM-dFBA\Scripts')
+load('cleanWorkspace.mat')
 
 %% 1.0 Load & Check Genome Scale Models
 % Please ensure that each model being loaded has had some degree of
@@ -61,10 +64,7 @@ modelSbo=setParam(modelSbo,'lb','r_1897',-1000); %isoleucine
 modelSbo=setParam(modelSbo,'eq',{'r_1904','r_1906','r_1913','r_1889','r_1879','r_1880','r_1881','r_1883'},0); %block non essential amino acid uptake
 modelSbo=setParam(modelSbo,'ub',{'r_1891','r_1893','r_1900','r_1903','r_1914','r_1911','r_1912','r_1902','r_1899','r_1897','r_1810'},0); % make AA-exchange & glucose irreversible
 
-modelSbo=setParam(modelSbo,'lb','r_4066',0.001); %set MFalpha2 production to a minimum of 0.009, this seems to be the maximum it can produce
-%however, once the model becomes constrained by competing with other
-%organisms in the dFBA simulations, it seems like the solution become
-%infeasible. Try instead with a more lenient value of 0.001
+modelSbo=setParam(modelSbo,'lb','r_4066',0.001); %set mfalpha2 production to minimum of 0.001
 modelSbo=setParam(modelSbo,'lb','r_4067',0.0001); %set Myrosinase production to minimum of 0.0001
 
 modelSbo=mergeCompartments(modelSbo);%merge compartments to make simulations run faster, this will be done for every model
@@ -87,7 +87,7 @@ printFluxes(modelSbo,solSbo.x);
 %Export model to excel format for inspection
 %exportToExcelFormat(modelSbo,'modelSbo.xlsx');
 
-%% 1.2 Bacteroides thetaiotamicron model
+%% 1.2 Bacteroides thetaiotamicron model curation
 
 modelBth = importModel('iBth801 v1.00.xml');
 modelBth.id = 'Bth';
@@ -106,7 +106,7 @@ printFluxes(modelBth,solBth.x);
 
 %exportToExcelFormat(modelBth,'modelBth.xlsx');  
 
-%% 1.3 Eubacterium rectale model - growth achieved
+%% 1.3 Eubacterium rectale model curation
 
 modelEre = importModel('iEre400 v1.00.xml');
 modelEre.id = 'Ere';
@@ -127,17 +127,12 @@ printFluxes(modelEre,solEre.x);
 
 %exportToExcelFormat(modelEre,'modelEre.xlsx');
 
-%% 1.4 Methanobrevibacter smithii model
+%% 1.4 Methanobrevibacter smithii model curation
 % This model gave me a lot of trouble. It seems to contain many
 % gaps/isolated subnetworks, as can been seen from running
 % gapReport(modelMsi). To try to make this a functioning model I had to
 % unconstrain all reactions and create a biomass equation without the
-% metabolites that could not be obtained. To get methane production, I had
-% to introduce methane as a bi-product of growth. This approach was 
-% discarded, as it was later it was found that
-% methane is produced at the same rate as aceteate is produced, therefore we
-% define the methane production equal to the rate of acetate comsumption in
-% the function f().
+% metabolites that could not be obtained.
 
 modelMsi = importModel('iMsi385.xml');
 modelMsi.id = 'Msi';
@@ -174,9 +169,6 @@ modelMsi = setParam(modelMsi,'lb',{'MethOut','bmOut_msi'},0);
 
 modelMsi = setParam(modelMsi,'obj','biomassMsi',1);
 [modelMsi, addedRxnsMsi]=addExchangeRxns(modelMsi,'in',{'m305','m339','m370','m417','m512','m470','m496','m380','m367','m354','m582'}); %add AA & formate exchange
-
-
-
 
 modelMsi.metNames(184) = {'carbon dioxide'}; % CO2 carbon dioxide for consistency with other models
 modelMsi.metNames(301) = {'water'}; % rename H2O as water for consistency
@@ -313,7 +305,7 @@ clear addedRxnsBth addedRxnsEre addedRxnsMsi ans canRxns colRxns metsToAdd msiRx
 %% 2.0 Initialize Models
 % To run this section, go to the scripts folder
 
-cd('C:\Users\zorrilla\Desktop\iGEM simulation environment\Scripts')
+cd('C:\Users\zorrilla\Desktop\COM-dFBA\Scripts')
 
 %Define cell strucutre of models to be initialized
 models = {modelSbo modelBth modelEre modelMsi modelCancer modelColon};
@@ -466,7 +458,7 @@ x(32):P28 (mmol/L)
 
 %}
 
-odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames),'Stats','on');
+odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames),'Stats','on','InitialStep',1e-3);
 
 tic
 [t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 500], initialConditions ,odeoptions); 
