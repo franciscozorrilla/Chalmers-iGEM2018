@@ -30,13 +30,22 @@ function [superModel,fluxes,bound,lbub] = updateFluxes(superModel,params)
 %                         superModel. Used as an index when model is not
 %                         producing/consuming metabolite from metNames
 %
-%   fluxes                Array with one cell per organism. Each cell
+%   superModelConstrained Updated superModel structure
+%
+%   fluxesConstrained     Array with one cell per organism. Each cell
 %                         contains a matrix with 7 columns and one row per
 %                         exchange reaction in the FBA solution for that 
 %                         origanism. Columns contain information about 
 %                         rxnIndex rxnName fluxValue rxnID rxnEqn lb ub
+% 
+%   boundsConstrained     Contains information about updated bound
 %  
-%   Usage: [superModel,fluxes] = updateFluxes(superModel,params)
+%   lbubConstrained       Contains ifnormation about which bound was
+%                         updated. 'u' means the upper bound was updated, 
+%                         'l' means the lower bound was updated, and 'x' 
+%                         means that no bound was updated.
+%
+%   Usage: [superModelConstrained,fluxesConstrained,boundsConstrained,lbubConstrained] = updateFluxes(superModel,params);
 %
 %   Francisco Zorrilla, 18-09-2018
 

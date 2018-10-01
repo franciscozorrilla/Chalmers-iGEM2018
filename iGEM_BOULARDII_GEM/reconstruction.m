@@ -192,11 +192,9 @@ modelSbo=setParam(modelSbo,'obj','r_4072',1); %MFalpha2 production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
 
-
 modelSbo=setParam(modelSbo,'obj','r_4073',1); %Myrosinase production
 sol=solveLP(modelSbo,1);
 printFluxes(modelSbo,sol.x);
-
 
 modelSbo=setParam(modelSbo,'obj','r_4074',1); %P28 production
 sol=solveLP(modelSbo,1);

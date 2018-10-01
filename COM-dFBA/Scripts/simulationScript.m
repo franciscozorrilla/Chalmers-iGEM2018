@@ -331,9 +331,9 @@ fluxes = superModelFluxes(superModel,whichFluxes);
 %metabolites during the dFBA simulation. To add new metabolites to the
 %model, simply add to the end of the list and check that the correct
 %exchange reactions have been "matched". Also remember to add Vmax/Ks data
-%for these metabolites if they are uptaken by models. Best to add new
-%metabolites at the end so that the excel file with parameters does not
-%have to be extensively reformatted
+%for these metabolites if they are uptaken by models in the paramTables 
+%excel file. Best to add new metabolites at the end so that the excel file 
+%with parameters does not have to be extensively reformatted.
 metNames = {'biomass S.bo',
 'biomass B.th',
 'biomass E.re',
@@ -380,7 +380,7 @@ metNames = {'biomass S.bo',
 [metEquations, metIdx, bounds, blocked] = checkFluxes(superModel,metNames);
 
 
-%% 3.0 Define kinetic paramters, initial conditions & flow rates
+%% 3.0 Initialize Environment & Kinetic Parameters
 % The kinetic paramters, initial conditions, flow rates, and other
 % adjustable parameters are defined in the excel sheet 'parameters.xlsx'.
 % To adjust parameters, change the values in the excel sheet and then 
@@ -401,9 +401,9 @@ params.blocked = blocked;
 initialConditions = transpose(params.mets(:,1));
 
 % Run one test FBA using initial conditions and kinetic parameters 
-[superModelTest,fluxesTest,bound,lbub] = updateFluxes(superModel,params);
+[superModelConstrained,fluxesConstrained,boundsConstrained,lbubConstrained] = updateFluxes(superModel,params);
 
-%% 4.0 Simulations
+%% 4.0 Simulation
 % Run this section to perform community simulations. To remove any of the
 % models from the community, simply set the initial biomass and inflow of 
 % an organism to zero (e.g. ere0 = 0, eref = 0). Make sure to re-run
@@ -463,6 +463,8 @@ odeoptions = odeset('RelTol',1e-3,'AbsTol',1e-3,'NonNegative',1:length(metNames)
 tic
 [t,xa] = ode15s(@(t,x)f(t,x,superModel,params),[0 500], initialConditions ,odeoptions); 
 toc
+
+%% 5.0 Visualization of Results
 
 figure(1)
 plot(t,xa(:,1:6))
