@@ -12,4 +12,6 @@ This repository makes use of the [RAVEN toolbox](https://github.com/SysBioChalme
 
 ## Acknowledgements
 
-We would like to thank the following people for providing guidance, feedback, and support in our modeling approach: Eduard Kerkhoven, Benjamin Sanchez, Avlant Nilsson, Raphael Ferreira, Boyang Ji, and Angelo Limeta.
+We would like to thank the following people for providing guidance, feedback, and support in our modeling approach: Eduard Kerkhoven, Benjamin Sanchez, Avlant Nilsson, Raphael Ferreira, Boyang Ji, and Angelo Limeta. Additionally, we would like to thank everyone at the Systems & Synthetic Biology division at Chalmers, for providing us with a nourishing work environment.
+
+##
