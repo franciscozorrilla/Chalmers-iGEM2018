@@ -1,3 +1,3 @@
 # ![iGEM CHALMERS](logo.png)
 
-Welcome to our project repositorty. This is a supplement to our wiki page, which can be found at .....
+Welcome to our project repositorty, this is a supplement to our [Wiki page](http://2018.igem.org/Team:Chalmers-Gothenburg).
