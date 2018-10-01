@@ -1,6 +1,6 @@
 # ![iGEM CHALMERS](logo.png)
 
-Welcome to our project repositorty, this is a supplement to our [Wiki page](http://2018.igem.org/Team:Chalmers-Gothenburg).
+Welcome to our project repositorty, a supplement to our [Wiki page](http://2018.igem.org/Team:Chalmers-Gothenburg). Here we present and make available our framework for community dynamic flux balance analysis simulations, COM-dFBA. Additionaly, we include the reconstruction script for generating a draft genome scale model for the probiotic _Saccharomyces boulardii_.
 
 ## Citation
 
