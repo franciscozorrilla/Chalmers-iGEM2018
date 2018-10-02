@@ -2,7 +2,7 @@
 
 ## Overview
 
-Here we present and make available the framework we developed for community dynamic flux balance analysis simulations, COM-dFBA. 
+Here we present and make available a framework developed for community dynamic flux balance analysis simulations, COM-dFBA. 
 Additionaly, we include the reconstruction script for generating a draft genome scale model for the probiotic _Saccharomyces boulardii_.
 
 ## Citation
