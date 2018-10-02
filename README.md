@@ -2,7 +2,7 @@
 
 ## Overview
 
-Presented in this repository is a framework developed for community dynamic flux balance analysis simulations, COM-dFBA.  This tool can be used to simulate, analyze, and visualize complex microbial communities such as the gut microbiome. The desired community environment is simulated by generating mass balances around user-defined exchange metabolites of interest, allowing the user to analyze competitive and cooperative interactions between organisms. Additionaly, the repository includes the reconstruction script for generating a draft genome scale model for the probiotic _Saccharomyces boulardii_, an organism of high research interest with no high quality GEM avaialable.
+Presented in this repository is a framework developed for community dynamic flux balance analysis simulations, COM-dFBA.  This tool can be used to simulate, analyze, and visualize complex microbial communities such as the gut microbiome. The desired community environment is simulated by generating mass balances around user-defined exchange metabolites of interest, allowing the user to analyze competitive and cooperative interactions between organisms. Additionaly, this repository includes the reconstruction script for generating a draft genome scale model for the probiotic _Saccharomyces boulardii_, an organism of high research interest with no high quality GEM avaialable.
 
 ## Citation
 
