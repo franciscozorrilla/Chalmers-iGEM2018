@@ -15,6 +15,10 @@ This repository makes use of the [RAVEN toolbox](https://github.com/SysBioChalme
 
 We would like to thank the following people for providing guidance, feedback, and support in our modeling approach: Eduard Kerkhoven, Benjamin Sanchez, Avlant Nilsson, Jonathan Robinson, Raphael Ferreira, Boyang Ji, and Angelo Limeta. Additionally, we would like to thank everyone in the [Systems & Synthetic Biology](http://sysbio.se/people.html) division at Chalmers, for providing us with a friendly and open work environment.
 
+## Contact Us
+
+For support, technical issues, bug reports, etc. please contact [Francisco Zorrilla](https://github.com/franciscozorrilla).
+
 ## Links
 
 For a more detailed description of COM-dFBA please visit our [Wiki](http://2018.igem.org/Team:Chalmers-Gothenburg) page.
