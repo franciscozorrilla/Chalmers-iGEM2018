@@ -341,8 +341,6 @@ metNames = {'biomass S.bo',
 'biomass Can',
 'biomass Col',
 'Glucose',
-'Water',
-'Oxygen',
 'Phosphate',
 'Ammonium',
 'Glutamine',
@@ -426,35 +424,33 @@ x(6):Colon biomass (g/L)
 
 SUBSTRATES
 x(7):Glucose (mmol/L)
-x(8):Water (mmol/L)
-x(9):Oxygen (mmol/L)
-x(10):Phosphate (mmol/L)
-x(11):Ammonium (mmol/L)
+x(8):Phosphate (mmol/L)
+x(9):Ammonium (mmol/L)
 
 AMINO ACIDS
-x(12):Glutamine (mmol/L)
-x(13):Histidine (mmol/L)
-x(14):Lysine (mmol/L)
-x(15):Phenylalanine (mmol/L)
-x(16):Valine (mmol/L)
-x(17):Threonine (mmol/L)
-x(18):Tryptophan (mmol/L)
-x(29):Methionine (mmol/L)
-x(20):Leucine (mmol/L)
-x(21):Isoleucine (mmol/L)
+x(10):Glutamine (mmol/L)
+x(11):Histidine (mmol/L)
+x(12):Lysine (mmol/L)
+x(13):Phenylalanine (mmol/L)
+x(14):Valine (mmol/L)
+x(15):Threonine (mmol/L)
+x(16):Tryptophan (mmol/L)
+x(17):Methionine (mmol/L)
+x(18):Leucine (mmol/L)
+x(19):Isoleucine (mmol/L)
 
 PRODUCTS
-x(22):Carbon dioxide (mmol/L)
-x(23):Acetate (mmol/L)
-x(24):Propanoate (mmol/L)
-x(25):Butyrate (mmol/L)
-x(26):Succinate (mmol/L)
-x(27):Formate (mmol/L)
-x(28):Ethanol (mmol/L)
-x(29):Methane (mmol/L)
-x(30):MFalpha2 (mmol/L)
-x(31):Myrosinase (mmol/L)
-x(32):P28 (mmol/L)
+x(20):Carbon dioxide (mmol/L)
+x(21):Acetate (mmol/L)
+x(22):Propanoate (mmol/L)
+x(23):Butyrate (mmol/L)
+x(24):Succinate (mmol/L)
+x(25):Formate (mmol/L)
+x(26):Ethanol (mmol/L)
+x(27):Methane (mmol/L)
+x(28):MFalpha2 (mmol/L)
+x(29):Myrosinase (mmol/L)
+x(30):P28 (mmol/L)
 
 %}
 
@@ -474,21 +470,27 @@ legend('S.bo Biomass','B.th Biomass','E.re Biomass','M.si Biomass', 'Cancer Biom
 
 figure(2)
 title('Substrates')
-plot(t,xa(:,7:11))
+plot(t,xa(:,7:9))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('Glucose','Water','Oxygen','Phosphate','Ammonium')
+legend('Glucose','Phosphate','Ammonium')
 
 figure(3)
 title('Amino acids')
-plot(t,xa(:,12:21))
+plot(t,xa(:,10:19))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Glutamine','Histidine','Lysine','Phenylalanine','Valine','Threonine','Tryptophan','Methionine','Leucine','Isoleucine')
 
 figure(4)
 title('Products')
-plot(t,xa(:,22:32))
+plot(t,xa(:,20:30))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Carbon dioxide','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')
+
+figure(4)
+title('Products')
+plot(t,xa(:,20:27))
+xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
+legend('methanewtr','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane')
 
 %Plot for simulation with only Sbo and Cancer
 figure(5)
@@ -497,6 +499,6 @@ plot(t,xa(:,[1 5]))
 legend('S.bo Biomass','Cancer Biomass')
 xlabel('Time (hours)'), ylabel('Concentration (g/L)')
 subplot(2,1,2)
-plot(t,xa(:,[30 31]))
+plot(t,xa(:,[28 29]))
 legend('MFalpha2','Myrosinase')
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
