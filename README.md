@@ -2,7 +2,8 @@
 
 ## Overview
 
-Here we present and make available a framework developed for community dynamic flux balance analysis simulations, COM-dFBA. 
+Here we present and make available a framework developed for community dynamic flux balance analysis simulations, COM-dFBA.  This framework can be used to simulate, analyze, and visualize complex microbial communities, such as the gut microbiome
+
 Additionaly, we include the reconstruction script for generating a draft genome scale model for the probiotic _Saccharomyces boulardii_.
 
 ## Citation
