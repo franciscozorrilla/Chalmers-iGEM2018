@@ -87,11 +87,12 @@ for organism = 1:length(superModel.organismID)
     end
 end
 
-%Rule to make S.bo start Myrosinase production
-if x(30)>= mfaThresh
+%Rule to make S.bo start Myrosinase production: NOTE THAT INDEX IS
+%HARDCODED, NEED TO ADJUST NUMBER IF METABOLITES ARE ADDED OR REMOVED
+if x(28)>= mfaThresh
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.001); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0.0001);
-elseif x(30)< mfaThresh
+elseif x(28)< mfaThresh
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4066',0.001); 
    superModel.subModels{1} = setParam(superModel.subModels{1},'lb','r_4067',0);
 end
@@ -107,11 +108,6 @@ else
     solSbo = solveLP(superModel.subModels{1},1);
     FBAsol{1} = solSbo.f;
     solSbo.skip = 0;
-    %if isempty(solSbo.f)
-    %    solSbo.f = 0;
-    %    solSbo.x = 0.*ones(length(superModel.subModels{1}.rxns),1);
-    %end
-    %printFluxes(superModel.subModels{1},solSbo.x)
 end
 %Need to a checking step to see if protein synthesis load is too heavy
 %for S.bo once substrates become limiting
@@ -261,15 +257,31 @@ for organism = 1:length(superModel.organismID)
 end
 
 %Run loop to generate mass balances
-%NOTE: This loop should be modified if more models are to be included in
+%NOTE: Indexes are hardcoded, so this loop should be modified if more models are to be included in
 %simulation.
-for metNum = 1:length(metIdx) 
-    if metNum == 5
-        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(29);%Cancer biomass mass balance
+for metNum = 1:length(metIdx)
+    if metNum == 1 & sbo0 == 0 & sbof == 0
+        dx(metNum) = 0;
+    elseif metNum == 2 & bth0 == 0 & bthf == 0
+        dx(metNum) = 0;    
+    elseif metNum == 3 & ere0 == 0 & eref == 0
+        dx(metNum) = 0;
+    elseif metNum == 4 & msi0 == 0 & msif == 0
+        dx(metNum) = 0;
+    elseif metNum == 5 & can0 == 0 & canf == 0
+        dx(metNum) = 0;
+    elseif metNum == 5 & (can0 ~= 0 | canf ~= 0)
+        dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(29);%Cancer biomass mass balance: NOTE THAT INDEX IS HARDCODED, NEED TO ADJUST NUMBER IF METABOLITES ARE ADDED OR REMOVED
     elseif metNum == 6
-        dx(metNum)= 0;%Colon biomass mass balance
+        dx(metNum)= 0;%Colon biomass mass balance should not change
     else
-        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - D*(x(metNum)- mets(metNum,2));
+        dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + ... 
+                     abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + ... 
+                     abs(solEre.x(metIdx(metNum,3))*x(3))*plusmin(metNum,3) + ... 
+                     abs(solMsi.x(metIdx(metNum,4))*x(4))*plusmin(metNum,4) + ...
+                     abs(solCan.x(metIdx(metNum,5))*x(5))*plusmin(metNum,5) + ...
+                     abs(solCol.x(metIdx(metNum,6))*x(6))*plusmin(metNum,6) - ...
+                     D*(x(metNum)- mets(metNum,2));
     end
 end
 
@@ -284,11 +296,14 @@ dx = dx(:);
 t
 
 %It is very helpful to print out exchnage fluxes for an organism when
-%debuggning/troubleshooting. To do this for S.bo for example, simply add:
+%debuggning/troubleshooting. Uncomment one or multiple of the following
+%lines to see exchange fluxes during simulations:
 
-%printFluxes(superModel.subModels{1},solSbo.x)
+printFluxes(superModel.subModels{1},solSbo.x)
+%printFluxes(superModel.subModels{2},solBth.x)
 %printFluxes(superModel.subModels{3},solEre.x)
-printFluxes(superModel.subModels{5},solCan.x)
-
+%printFluxes(superModel.subModels{4},solMsi.x)
+%printFluxes(superModel.subModels{5},solCan.x)
+%printFluxes(superModel.subModels{6},solCol.x)
 
 end

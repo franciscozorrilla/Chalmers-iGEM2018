@@ -486,12 +486,6 @@ plot(t,xa(:,20:30))
 xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
 legend('Carbon dioxide','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane','MFalpha2','Myrosinase','P28')
 
-figure(4)
-title('Products')
-plot(t,xa(:,20:27))
-xlabel('Time (hours)'), ylabel('Concentration (mmol/gDCW)')
-legend('methanewtr','Acetate','Propanoate','Butyrate','Succinate','Ethanol','Methane')
-
 %Plot for simulation with only Sbo and Cancer
 figure(5)
 subplot(2,1,1)

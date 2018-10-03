@@ -257,13 +257,23 @@ for organism = 1:length(superModel.organismID)
 end
 
 %Run loop to generate mass balances
-%NOTE: This loop should be modified if more models are to be included in
-%simulation.
-for metNum = 1:length(metIdx) 
-    if metNum == 5
+%NOTE: Indexes are hardcoded, so this loop should be modified if more 
+%models are to be included in simulation or order changes.
+for metNum = 1:length(metIdx)
+    if metNum == 1 & sbo0 == 0 & sbof == 0
+        dx(metNum) = 0;
+    elseif metNum == 2 & bth0 == 0 & bthf == 0
+        dx(metNum) = 0;    
+    elseif metNum == 3 & ere0 == 0 & eref == 0
+        dx(metNum) = 0;
+    elseif metNum == 4 & msi0 == 0 & msif == 0
+        dx(metNum) = 0;
+    elseif metNum == 5 & can0 == 0 & canf == 0
+        dx(metNum) = 0;
+    elseif metNum == 5 & (can0 ~= 0 | canf ~= 0)
         dx(metNum)= abs(x(metNum)*solCan.f) - ACE*myrMW*x(29);%Cancer biomass mass balance: NOTE THAT INDEX IS HARDCODED, NEED TO ADJUST NUMBER IF METABOLITES ARE ADDED OR REMOVED
     elseif metNum == 6
-        dx(metNum)= 0;%Colon biomass mass balance
+        dx(metNum)= 0;%Colon biomass mass balance should not change
     else
         dx(metNum)=  abs(solSbo.x(metIdx(metNum,1))*x(1))*plusmin(metNum,1) + ... 
                      abs(solBth.x(metIdx(metNum,2))*x(2))*plusmin(metNum,2) + ... 
@@ -289,10 +299,10 @@ t
 %debuggning/troubleshooting. Uncomment one or multiple of the following
 %lines to see exchange fluxes during simulations:
 
-%printFluxes(superModel.subModels{1},solSbo.x)
+printFluxes(superModel.subModels{1},solSbo.x)
 %printFluxes(superModel.subModels{2},solBth.x)
 %printFluxes(superModel.subModels{3},solEre.x)
-printFluxes(superModel.subModels{4},solMsi.x)
+%printFluxes(superModel.subModels{4},solMsi.x)
 %printFluxes(superModel.subModels{5},solCan.x)
 %printFluxes(superModel.subModels{6},solCol.x)
 
