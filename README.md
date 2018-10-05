@@ -1,4 +1,4 @@
-# ![iGEM CHALMERS](logo.png)
+# ![iGEM CHALMERS](logo2.png)
 
 ## Overview
 
