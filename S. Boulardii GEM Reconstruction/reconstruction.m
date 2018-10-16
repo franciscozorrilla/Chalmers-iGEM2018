@@ -217,4 +217,4 @@ exportToExcelFormat(modelSbo,'modelSbo.xlsx');
 
 %Save model as a mat file
 save('modelSbo.mat','modelSbo')
-%This modelSbo.mat should be identical to the modelSbo.mat file in the folder ...\iGEM simulation environment\GEMs
+%This modelSbo.mat should be identical to the modelSbo.mat file in the folder ...\COM-dFBA\GEMs
