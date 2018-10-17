@@ -22,4 +22,4 @@ For support, technical issues, bug reports, etc. please contact [Francisco Zorri
 
 ## Links
 
-For a more detailed description of COM-dFBA please visit our [Wiki](http://2018.igem.org/Team:Chalmers-Gothenburg) page.
+For a more detailed description of COM-dFBA please visit our [Wiki](http://2018.igem.org/Team:Chalmers-Gothenburg/ModelConstruction#COM-dFBA) page.
