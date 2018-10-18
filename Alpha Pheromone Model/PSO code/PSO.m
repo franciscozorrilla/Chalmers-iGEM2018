@@ -1,3 +1,5 @@
+% Code implemented based on the course Stochastic Optimization Algorithms, Chalmers University of Technology (Whade, M., 2017)
+
 clear all;
 clc;
 
